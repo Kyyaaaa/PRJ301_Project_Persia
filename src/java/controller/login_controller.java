@@ -7,7 +7,6 @@ import java.io.IOException;
 import model.User;
 import model.dao.UserDAO;
 
-@WebServlet("/login")
 public class login_controller extends HttpServlet {
     
     @Override
@@ -54,7 +53,7 @@ public class login_controller extends HttpServlet {
         session.setAttribute("user", user);
 
         // 6. Điều hướng theo role
-        if (user.getRoleId() == 1) { // admin
+        if (user.role_id == 1) { // admin
             response.sendRedirect(request.getContextPath() + "/admin/dashboard");
         } else { // user thường
             response.sendRedirect(request.getContextPath() + "/home");
