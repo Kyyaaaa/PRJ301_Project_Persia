@@ -4,8 +4,10 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import model.User;
 import model.dao.UserDAO;
+import utilities.Validate;
 
 public class login_controller extends HttpServlet {
     
@@ -21,31 +23,34 @@ public class login_controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        response.setContentType("text/html; charset = UTF-8");
+        PrintWriter out = response.getWriter();
+             
         // 1. Lấy dữ liệu từ form
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        // 2. Kiểm tra rỗng
-        if (username == null || password == null ||
-            username.isEmpty() || password.isEmpty()) {
-
-            request.setAttribute("error", "Vui lòng nhập đầy đủ thông tin");
+        // 2. Validate username, password
+        if (!Validate.validateUsername(username) || !Validate.validatePassword(password)) {
+            request.setAttribute("error", "Username / Password không hợp lệ");
             request.getRequestDispatcher("/WEB-INF/login/login.jsp")
                    .forward(request, response);
             return;
         }
 
+
+        
         // 3. Kiểm tra tài khoản bằng DAO
         UserDAO dao = new UserDAO();
         User user = dao.login(username, password);
         
+        
         // 4. Sai tài khoản
         if (user == null) {
-            request.setAttribute("error", "Sai tài khoản hoặc mật khẩu");
+            request.setAttribute("error", "Sai Username / Password");
             request.getRequestDispatcher("/WEB-INF/login/login.jsp")
                    .forward(request, response);
-            return;
+            return; 
         }
         
         // 5. Đúng → lưu session
@@ -56,7 +61,7 @@ public class login_controller extends HttpServlet {
         if (user.role_id == 1) { // admin
             response.sendRedirect(request.getContextPath() + "/admin/dashboard");
         } else { // user thường
-            response.sendRedirect(request.getContextPath() + "/home");
+            response.sendRedirect(request.getContextPath() + "/admin/dashboard");
         }
     }
 }

@@ -43,7 +43,37 @@ public class UserDAO extends DBContext {
 
         return null;
     }
+    
+    /**
+     * Register: Đăng ký user mới gồm (username, password, role_id)
+     * @return User nếu đăng ký thành công, null nếu không đăng ký thành công
+     */
+    public User register(String username, String password, int role_id) {
+        String sql = """
+            INSERT INTO Users(username, password, role_id) 
+            VALUES (?, ?, ?);
+        """;
+        
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ps.setInt(3, role_id);
 
+            int rs = ps.executeUpdate();
+
+            if (rs > 0) {
+                return new User(username, password, role_id);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    
     /**
      * Kiểm tra user có tồn tại hay không
      */
@@ -63,4 +93,5 @@ public class UserDAO extends DBContext {
         }
         return false;
     }
+    
 }
