@@ -4,8 +4,9 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import model.User;
+import model.dao.UserDAO;
 
-@WebServlet("/login")
 public class login_controller extends HttpServlet {
     
     @Override
@@ -35,23 +36,27 @@ public class login_controller extends HttpServlet {
             return;
         }
 
-        // 3. Kiểm tra tài khoản (demo)
-        if ("admin".equals(username) && "123".equals(password)) {
-
-            // 4. Tạo session
-            HttpSession session = request.getSession();
-            session.setAttribute("user", username);
-
-            // 5. Redirect sang dashboard (Servlet)
-            response.sendRedirect(
-                request.getContextPath() + "/admin/dashboard"
-            );
-
-        } else {
-            // 6. Sai tài khoản
+        // 3. Kiểm tra tài khoản bằng DAO
+        UserDAO dao = new UserDAO();
+        User user = dao.login(username, password);
+        
+        // 4. Sai tài khoản
+        if (user == null) {
             request.setAttribute("error", "Sai tài khoản hoặc mật khẩu");
             request.getRequestDispatcher("/WEB-INF/login/login.jsp")
                    .forward(request, response);
+            return;
+        }
+        
+        // 5. Đúng → lưu session
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
+
+        // 6. Điều hướng theo role
+        if (user.role_id == 1) { // admin
+            response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+        } else { // user thường
+            response.sendRedirect(request.getContextPath() + "/home");
         }
     }
 }
