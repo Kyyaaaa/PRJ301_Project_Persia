@@ -5,9 +5,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import model.Role;
 import model.dao.RoleDAO;
 import model.User;
+import model.dao.UserDAO;
 
 public class users_controller extends HttpServlet {
     
@@ -37,7 +39,14 @@ public class users_controller extends HttpServlet {
             return;
         }
         
-//        out.println(role.role_name);
+        List<User> users = new UserDAO().getAllUsers();
+        request.setAttribute("users", users);
+        
+        request.setAttribute("size", users.size());
+        StringBuffer lol = new StringBuffer("");
+        for(User i : users) lol.append(i.username);
+        request.setAttribute("lol", lol);
+
         
         // Forward the request to the JSP view to render the dashboard page
         request.getRequestDispatcher("/WEB-INF/admin/users.jsp")

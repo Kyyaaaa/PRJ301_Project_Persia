@@ -3,6 +3,8 @@ package model.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import model.DBContext;
 import model.User;
 
@@ -44,6 +46,31 @@ public class UserDAO extends DBContext {
         return null;
     }
     
+    public List<User> getAllUsers() {
+        String sql = "SELECT * FROM Users";
+        
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ResultSet rs = ps.executeQuery();
+            
+            List<User> users = new ArrayList<>();
+            while (rs.next()) {
+                users.add(new User(
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getInt("role_id")
+                ));
+            }
+            return users;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+
     /**
      * Register: Đăng ký user mới gồm (username, password, role_id)
      * @return User nếu đăng ký thành công, null nếu không đăng ký thành công

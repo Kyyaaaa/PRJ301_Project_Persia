@@ -5,6 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.User" %>
+<%@page import="java.util.List" %>
+<%@page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +15,30 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Admin users</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    List<User> users = (ArrayList<User>)request.getAttribute("users");
+                    if(users != null) {
+                        for(User user : users) {
+                %>
+                    <tr>
+                        <td><%= user.username %></td>
+                        <td><%= user.password %></td>
+                        <td><%= user.role_id %></td>
+                    </tr>
+                <%
+                        }
+                    }
+                %>
+            </tbody>
+        </table>
     </body>
 </html>
