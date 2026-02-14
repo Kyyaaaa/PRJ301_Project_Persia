@@ -15,6 +15,19 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <a href="<%= request.getContextPath() %>/admin/users/create">
+            <button>Create New User</button>
+        </a>
+        
+        <%
+            String success = (String) request.getAttribute("success");
+            if (success != null) {
+        %>
+            <p style="color:green;"><%= success %></p>
+        <%
+            }
+        %>
+            
         <table>
             <thead>
                 <tr>

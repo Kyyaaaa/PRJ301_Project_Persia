@@ -19,24 +19,13 @@ public class users_controller extends HttpServlet {
         response.setContentType("text/html; charset = UTF-8");
         PrintWriter out = response.getWriter();
         
-        // Lấy session
         HttpSession session = request.getSession(false);
-        
-        // Nếu chưa login
-        if (session == null || session.getAttribute("user") == null) {
-            request.getRequestDispatcher("/WEB-INF/login/login.jsp")
-                   .forward(request, response);
-            return;
-        }
-        
-        User user = (User)session.getAttribute("user");
-        RoleDAO role_dao = new RoleDAO();
-        
-        // Nếu không phải admin thì không cho vào
-        Role role = role_dao.getRoleById(user.role_id);
-        if(!role.role_name.equals("admin")) {
-            out.println("Bạn không có quyền truy cập vào đây");
-            return;
+        if (session != null) {
+            String error = (String) session.getAttribute("flash_success");
+            if (error != null) {
+                request.setAttribute("success", error);
+                session.removeAttribute("flash_success");
+            }
         }
         
         List<User> users = new UserDAO().getAllUsers();

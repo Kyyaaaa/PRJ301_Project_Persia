@@ -14,7 +14,17 @@ public class login_controller extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
+        // Lấy flash error từ session (nếu có)
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            String error = (String) session.getAttribute("flash_error");
+            if (error != null) {
+                request.setAttribute("error", error);
+                session.removeAttribute("flash_error");
+            }
+        }
+        
         // Forward the request to the JSP view to render the dashboard page
         request.getRequestDispatcher("/WEB-INF/login/login.jsp")
                .forward(request, response);
@@ -29,39 +39,31 @@ public class login_controller extends HttpServlet {
         // 1. Lấy dữ liệu từ form
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
+        
+        HttpSession session = request.getSession();
+        
         // 2. Validate username, password
         if (!Validate.validateUsername(username) || !Validate.validatePassword(password)) {
-            request.setAttribute("error", "Username / Password không hợp lệ");
-            request.getRequestDispatcher("/WEB-INF/login/login.jsp")
-                   .forward(request, response);
+            session.setAttribute("flash_error", "Username / Password không hợp lệ");
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-
-        
         // 3. Kiểm tra tài khoản bằng DAO
         UserDAO dao = new UserDAO();
         User user = dao.login(username, password);
         
-        
         // 4. Sai tài khoản
         if (user == null) {
-            request.setAttribute("error", "Sai Username / Password");
-            request.getRequestDispatcher("/WEB-INF/login/login.jsp")
-                   .forward(request, response);
+            session.setAttribute("flash_error", "Sai Username / Password");
+            response.sendRedirect(request.getContextPath() + "/login");
             return; 
         }
         
-        // 5. Đúng → lưu session
-        HttpSession session = request.getSession();
+        // 5. Đúng → lưu user
         session.setAttribute("user", user);
 
         // 6. Điều hướng theo role
-        if (user.role_id == 1) { // admin
-            response.sendRedirect(request.getContextPath() + "/admin/dashboard");
-        } else { // user thường
-            response.sendRedirect(request.getContextPath() + "/admin/dashboard");
-        }
+        response.sendRedirect(request.getContextPath() + "/admin/dashboard");
     }
 }

@@ -5,9 +5,15 @@
         <group>
             <file>file:/D:/My%20file/My_GitHub/PRJ301_Project_Persia/src/java/controller/login_controller.java</file>
             <file>file:/D:/My%20file/My_GitHub/PRJ301_Project_Persia/src/java/model/DAO/UserDAO.java</file>
-            <file>file:/D:/My%20file/My_GitHub/PRJ301_Project_Persia/src/java/controller/dashboard_controller.java</file>
-            <file>file:/D:/My%20file/My_GitHub/PRJ301_Project_Persia/src/java/model/DAO/RoleDAO.java</file>
+            <file>file:/D:/My%20file/My_GitHub/PRJ301_Project_Persia/web/WEB-INF/register/register.jsp</file>
+            <file>file:/D:/My%20file/My_GitHub/PRJ301_Project_Persia/src/java/controller/admin/users_controller.java</file>
             <file>file:/D:/My%20file/My_GitHub/PRJ301_Project_Persia/web/WEB-INF/admin/dashboard.jsp</file>
+            <file>file:/D:/My%20file/My_GitHub/PRJ301_Project_Persia/src/java/controller/register_controller.java</file>
+            <file>file:/D:/My%20file/My_GitHub/PRJ301_Project_Persia/web/WEB-INF/web.xml</file>
+            <file>file:/D:/My%20file/My_GitHub/PRJ301_Project_Persia/src/java/controller/admin/users_create_controller.java</file>
+            <file>file:/D:/My%20file/My_GitHub/PRJ301_Project_Persia/web/WEB-INF/admin/users_create.jsp</file>
+            <file>file:/D:/My%20file/My_GitHub/PRJ301_Project_Persia/web/WEB-INF/admin/users.jsp</file>
+            <file>file:/D:/My%20file/My_GitHub/PRJ301_Project_Persia/src/java/controller/admin/dashboard_controller.java</file>
         </group>
     </open-files>
 </project-private>

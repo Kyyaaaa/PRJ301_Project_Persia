@@ -17,28 +17,6 @@ public class dashboard_controller extends HttpServlet {
         response.setContentType("text/html; charset = UTF-8");
         PrintWriter out = response.getWriter();
         
-        // Lấy session
-        HttpSession session = request.getSession(false);
-        
-        // Nếu chưa login
-        if (session == null || session.getAttribute("user") == null) {
-            request.getRequestDispatcher("/WEB-INF/login/login.jsp")
-                   .forward(request, response);
-            return;
-        }
-        
-        User user = (User)session.getAttribute("user");
-        RoleDAO role_dao = new RoleDAO();
-        
-        // Nếu không phải admin thì không cho vào
-        Role role = role_dao.getRoleById(user.role_id);
-        if(!role.role_name.equals("admin")) {
-            out.println("Bạn không có quyền truy cập vào đây");
-            return;
-        }
-        
-//        out.println(role.role_name);
-        
         // Forward the request to the JSP view to render the dashboard page
         request.getRequestDispatcher("/WEB-INF/admin/dashboard.jsp")
                .forward(request, response);
