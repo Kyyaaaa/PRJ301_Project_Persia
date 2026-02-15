@@ -27,6 +27,15 @@
         <%
             }
         %>
+        
+        <%
+            String error = (String) request.getAttribute("error");
+            if (error != null) {
+        %>
+            <p style="color:red;"><%= error %></p>
+        <%
+            }
+        %>
             
         <table>
             <thead>
@@ -49,6 +58,11 @@
                         <td>
                             <a href="<%= request.getContextPath() %>/admin/users/edit?username=<%= user.username %>">
                                 <button>Update</button>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="<%= request.getContextPath() %>/admin/users/delete?username=<%= user.username %>">
+                                <button>Delete</button>
                             </a>
                         </td>
                     </tr>

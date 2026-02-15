@@ -54,4 +54,13 @@
         <servlet-name>users_edit</servlet-name>
         <url-pattern>/admin/users/edit</url-pattern>
     </servlet-mapping>
+    <!-- Admin users_delete servlet -->
+    <servlet>
+        <servlet-name>users_delete</servlet-name>
+        <servlet-class>controller.admin.users_delete_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>users_delete</servlet-name>
+        <url-pattern>/admin/users/delete</url-pattern>
+    </servlet-mapping>
 </web-app>

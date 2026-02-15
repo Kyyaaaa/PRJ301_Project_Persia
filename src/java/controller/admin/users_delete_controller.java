@@ -12,7 +12,7 @@ import model.User;
 import model.dao.UserDAO;
 import utilities.Validate;
 
-public class users_edit_controller extends HttpServlet {
+public class users_delete_controller extends HttpServlet {
     
     private UserDAO userDAO = new UserDAO();
     private RoleDAO roleDAO = new RoleDAO(); 
@@ -38,7 +38,7 @@ public class users_edit_controller extends HttpServlet {
             try {
                 if(userDAO.isExist(username)) {
                     request.setAttribute("userToEdit", username); // Đặt đối tượng user vào request
-                    request.getRequestDispatcher("/WEB-INF/admin/users_edit.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/admin/users_delete.jsp").forward(request, response);
                 } 
                 else {
                      // Xử lý khi không tìm thấy user
@@ -62,29 +62,10 @@ public class users_edit_controller extends HttpServlet {
         response.setContentType("text/html; charset = UTF-8");
         PrintWriter out = response.getWriter();
              
-        // 1. Lấy dữ liệu từ form
+        // 1. Lấy dữ liệu
         String username = request.getParameter("userToEdit");
-        String password = request.getParameter("password");
-        String role_id = request.getParameter("role_id");
         
         HttpSession session = request.getSession();
-        
-        // 2. Validate username, password
-        if (!Validate.validateUsername(username) || !Validate.validatePassword(password) ||
-                !Validate.validateRoleId(role_id)
-                ) {   
-            session.setAttribute("flash_error", "Password / Role không hợp lệ");
-//            out.println("Sai format r thang ngu");
-//            out.println(request.getParameter("userToEdit"));
-            response.sendRedirect(request.getContextPath() + "/admin/users/edit?username=" + request.getParameter("userToEdit"));
-            return;
-        }
-        
-//            out.println(username);
-//            out.println("<br>");
-//            out.println(password);
-//            out.println("<br>");
-//            out.println(role_id);
         
         // 3. Kiểm tra tài khoản có tồn tại hay không
         if(!userDAO.isExist(username)) {
@@ -93,14 +74,14 @@ public class users_edit_controller extends HttpServlet {
             return;
         }
         
-        // 4. Update tài khoản
-        if (!userDAO.update(username, password, Integer.parseInt(role_id))) {
-            session.setAttribute("flash_error", "Update tài khoản thất bại");
+        // 4. Delete tài khoản
+        if (!userDAO.delete(username)) {
+            session.setAttribute("flash_error", "Delete tài khoản thất bại");
             response.sendRedirect(request.getContextPath() + "/admin/users/edit?username=" + request.getParameter("userToEdit"));
             return; 
         }
         
-        session.setAttribute("flash_success", "Update user thành công");
+        session.setAttribute("flash_success", "Delete user thành công");
         response.sendRedirect(request.getContextPath() + "/admin/users");
     }
 }

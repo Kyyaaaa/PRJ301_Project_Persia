@@ -21,10 +21,16 @@ public class users_controller extends HttpServlet {
         
         HttpSession session = request.getSession(false);
         if (session != null) {
-            String error = (String) session.getAttribute("flash_success");
-            if (error != null) {
-                request.setAttribute("success", error);
+            String success = (String) session.getAttribute("flash_success");
+            if (success != null) {
+                request.setAttribute("success", success);
                 session.removeAttribute("flash_success");
+            }
+            
+            String error = (String) session.getAttribute("flash_error");
+            if (error != null) {
+                request.setAttribute("error", error);
+                session.removeAttribute("flash_error");
             }
         }
         

@@ -132,6 +132,33 @@ public class UserDAO extends DBContext {
         }
         return false;
     }
+
+/**
+     * Delete: Xóa user khỏi hệ thống dựa trên username
+     * @param username Tên đăng nhập cần xóa
+     * @return true nếu xóa thành công, false nếu thất bại (hoặc không tìm thấy)
+     */
+    public boolean delete(String username) {
+        String sql = "DELETE FROM Users WHERE username = ?";
+
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            // Gán giá trị cho dấu hỏi chấm (?)
+            ps.setString(1, username);
+
+            // executeUpdate trả về số dòng bị ảnh hưởng
+            int rowsAffected = ps.executeUpdate();
+            
+            // Nếu số dòng > 0 nghĩa là đã có user bị xóa
+            return rowsAffected > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     
     /**
      * Kiểm tra user có tồn tại hay không
