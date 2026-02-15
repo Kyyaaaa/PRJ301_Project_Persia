@@ -45,4 +45,13 @@
         <servlet-name>users_create</servlet-name>
         <url-pattern>/admin/users/create</url-pattern>
     </servlet-mapping>
+    <!-- Admin users_edit servlet -->
+    <servlet>
+        <servlet-name>users_edit</servlet-name>
+        <servlet-class>controller.admin.users_edit_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>users_edit</servlet-name>
+        <url-pattern>/admin/users/edit</url-pattern>
+    </servlet-mapping>
 </web-app>

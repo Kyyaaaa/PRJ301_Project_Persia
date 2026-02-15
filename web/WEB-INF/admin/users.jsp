@@ -46,6 +46,11 @@
                         <td><%= user.username %></td>
                         <td><%= user.password %></td>
                         <td><%= user.role_id %></td>
+                        <td>
+                            <a href="<%= request.getContextPath() %>/admin/users/edit?username=<%= user.username %>">
+                                <button>Update</button>
+                            </a>
+                        </td>
                     </tr>
                 <%
                         }

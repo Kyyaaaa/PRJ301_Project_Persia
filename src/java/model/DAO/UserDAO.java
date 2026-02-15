@@ -100,6 +100,38 @@ public class UserDAO extends DBContext {
 
         return null;
     }
+
+/**
+     * Update: Cập nhật thông tin user (password, role) dựa trên username
+     * @param user Đối tượng User chứa thông tin mới
+     * @return true nếu update thành công, false nếu thất bại
+     */
+    public boolean update(String username, String password, int role_id) {
+        String sql = """
+            UPDATE Users 
+            SET password = ?, role_id = ? 
+            WHERE username = ?
+        """;
+
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            // Set các giá trị mới
+            ps.setString(1, password);
+            ps.setInt(2, role_id); // Giả sử model User có hàm getRoleId()
+            
+            // Set điều kiện Where (Username cũ)
+            ps.setString(3, username);
+
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     
     /**
      * Kiểm tra user có tồn tại hay không
@@ -120,5 +152,6 @@ public class UserDAO extends DBContext {
         }
         return false;
     }
+    
     
 }
