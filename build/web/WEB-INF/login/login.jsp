@@ -9,10 +9,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Login</title>
     </head>
     <body>
-<!--        <h1>/login</h1>-->
+        <h1>Login</h1>
         <form action="<%= request.getContextPath() %>/login" method="post">
             <table>
                 <tr>
@@ -30,6 +30,14 @@
                 </tr>
             </table>
         </form>
-        <p style="color:red">${error}</p>
+            
+        <%
+            String error = (String) request.getAttribute("error");
+            if (error != null) {
+        %>
+            <p style="color:red;"><%= error %></p>
+        <%
+            }
+        %>
     </body>
 </html>

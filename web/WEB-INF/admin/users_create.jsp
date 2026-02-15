@@ -1,19 +1,13 @@
-<%-- 
-    Document   : login
-    Created on : Jan 25, 2026, 1:36:24 PM
-    Author     : ADMIN
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Login</title>
+        <title>JSP Page</title>
     </head>
     <body>
-        <h1>Login</h1>
-        <form action="<%= request.getContextPath() %>/login" method="post">
+        <h1>Create a new user</h1>
+        <form action="<%= request.getContextPath() %>/admin/users/create" method="post">
             <table>
                 <tr>
                     <td>Username:</td>
@@ -24,8 +18,18 @@
                     <td><input type="password" name="password" required></td>
                 </tr>
                 <tr>
+                    <td>Role:</td>
+                    <td>
+                        <select name="role_id">
+                            <option value="1">admin</option>
+                            <option value="2">teacher</option>
+                            <option value="3">student</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="2">
-                        <button type="submit">Login</button>
+                        <button type="submit">Create</button>
                     </td>
                 </tr>
             </table>

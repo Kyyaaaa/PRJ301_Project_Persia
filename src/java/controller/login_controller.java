@@ -4,15 +4,27 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import model.User;
 import model.dao.UserDAO;
+import utilities.Validate;
 
 public class login_controller extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
+        // Lấy flash error từ session (nếu có)
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            String error = (String) session.getAttribute("flash_error");
+            if (error != null) {
+                request.setAttribute("error", error);
+                session.removeAttribute("flash_error");
+            }
+        }
+        
         // Forward the request to the JSP view to render the dashboard page
         request.getRequestDispatcher("/WEB-INF/login/login.jsp")
                .forward(request, response);
@@ -21,18 +33,19 @@ public class login_controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        response.setContentType("text/html; charset = UTF-8");
+        PrintWriter out = response.getWriter();
+             
         // 1. Lấy dữ liệu từ form
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
-        // 2. Kiểm tra rỗng
-        if (username == null || password == null ||
-            username.isEmpty() || password.isEmpty()) {
-
-            request.setAttribute("error", "Vui lòng nhập đầy đủ thông tin");
-            request.getRequestDispatcher("/WEB-INF/login/login.jsp")
-                   .forward(request, response);
+        
+        HttpSession session = request.getSession();
+        
+        // 2. Validate username, password
+        if (!Validate.validateUsername(username) || !Validate.validatePassword(password)) {
+            session.setAttribute("flash_error", "Username / Password không hợp lệ");
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
@@ -42,21 +55,15 @@ public class login_controller extends HttpServlet {
         
         // 4. Sai tài khoản
         if (user == null) {
-            request.setAttribute("error", "Sai tài khoản hoặc mật khẩu");
-            request.getRequestDispatcher("/WEB-INF/login/login.jsp")
-                   .forward(request, response);
-            return;
+            session.setAttribute("flash_error", "Sai Username / Password");
+            response.sendRedirect(request.getContextPath() + "/login");
+            return; 
         }
         
-        // 5. Đúng → lưu session
-        HttpSession session = request.getSession();
+        // 5. Đúng → lưu user
         session.setAttribute("user", user);
 
         // 6. Điều hướng theo role
-        if (user.role_id == 1) { // admin
-            response.sendRedirect(request.getContextPath() + "/admin/dashboard");
-        } else { // user thường
-            response.sendRedirect(request.getContextPath() + "/home");
-        }
+        response.sendRedirect(request.getContextPath() + "/admin/dashboard");
     }
 }
