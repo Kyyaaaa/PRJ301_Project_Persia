@@ -71,4 +71,35 @@ public class AssetDAO extends DBContext {
         return null;
     }
     
+    public Asset create(String assetName, Integer typeId, Integer statusId) {
+        String sql = """
+            INSERT INTO Assets (asset_name, type_id, status_id)
+            VALUES (?, ?, ?)
+        """;
+
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(
+                sql, PreparedStatement.RETURN_GENERATED_KEYS
+            )
+        ) {
+            ps.setString(1, assetName);
+            ps.setObject(2, typeId);    // setObject để xử lý NULL
+            ps.setObject(3, statusId);
+
+            int affectedRows = ps.executeUpdate();
+
+            if (affectedRows > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    int assetId = rs.getInt(1);
+                    return new Asset(assetId, assetName, typeId, statusId);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

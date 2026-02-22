@@ -26,6 +26,15 @@ public class assets_create_controller extends HttpServlet {
         response.setContentType("text/html; charset = UTF-8");
         PrintWriter out = response.getWriter();
         
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            String error = (String) session.getAttribute("flash_error");
+            if (error != null) {
+                request.setAttribute("error", error);
+                session.removeAttribute("flash_error");
+            }
+        }
+        
         // Statuses list
         List<AssetStatus> list_status = new AssetStatusDAO().getAllAssetStatuses();
         request.setAttribute("list_status", list_status);
@@ -46,8 +55,26 @@ public class assets_create_controller extends HttpServlet {
         response.setContentType("text/html; charset = UTF-8");
         PrintWriter out = response.getWriter();
         
+        // 1. Lấy dữ liệu từ form
+        String asset_name = request.getParameter("asset_name");
+        String type_id = request.getParameter("type_id");
         String status_id = request.getParameter("status_id");
         
-        out.println(status_id);
+        HttpSession session = request.getSession();
+        
+        // 2. Tạo tài sản mới
+        Asset asset = new AssetDAO().create(asset_name, Integer.parseInt(type_id), Integer.parseInt(status_id));
+
+        if (asset == null) {
+            session.setAttribute("flash_error", "Tạo tài sản thất bại");
+            response.sendRedirect(request.getContextPath() + "/admin/assets/create");
+            return; 
+        }
+        
+        // 3. Hiện thông báo và quay về
+        session.setAttribute("flash_success", "Tạo tài sản thành công");
+        response.sendRedirect(request.getContextPath() + "/admin/assets/read");
+        
+//        out.println(asset_name + " " + type_id + " " + status_id);
     }
 }
