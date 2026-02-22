@@ -2,25 +2,53 @@ package model;
 
 public class Asset {
 
-    public int asset_id;
-    public String asset_name;
-    public int category_id;
-    public int quantity;
-    public String status;
-    public String room;
-    public String note;
+    public int assetId;
+    public String assetName;
+    public Integer typeId;
+    public Integer statusId;
 
+    // Constructor không tham số
     public Asset() {
     }
 
-    public Asset(int asset_id, String asset_name, int category_id,
-                 int quantity, String status, String room, String note) {
-        this.asset_id = asset_id;
-        this.asset_name = asset_name;
-        this.category_id = category_id;
-        this.quantity = quantity;
-        this.status = status;
-        this.room = room;
-        this.note = note;
+    // Constructor đầy đủ tham số
+    public Asset(int assetId, String assetName, Integer typeId, Integer statusId) {
+        this.assetId = assetId;
+        this.assetName = assetName;
+        this.typeId = typeId;
+        this.statusId = statusId;
+    }
+
+    // Getter & Setter
+    public int getAssetId() {
+        return assetId;
+    }
+
+    public void setAssetId(int assetId) {
+        this.assetId = assetId;
+    }
+
+    public String getAssetName() {
+        return assetName;
+    }
+
+    public void setAssetName(String assetName) {
+        this.assetName = assetName;
+    }
+
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
+    }
+
+    public Integer getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
     }
 }

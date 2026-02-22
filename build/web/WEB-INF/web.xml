@@ -63,4 +63,23 @@
         <servlet-name>users_delete</servlet-name>
         <url-pattern>/admin/users/delete</url-pattern>
     </servlet-mapping>
+    
+    <!-- Admin assets_read servlet -->
+    <servlet>
+        <servlet-name>assets_read</servlet-name>
+        <servlet-class>controller.admin.assets_read_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>assets_read</servlet-name>
+        <url-pattern>/admin/assets/read</url-pattern>
+    </servlet-mapping>
+    <!-- Admin assets_create servlet -->
+    <servlet>
+        <servlet-name>assets_create</servlet-name>
+        <servlet-class>controller.admin.assets_create_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>assets_create</servlet-name>
+        <url-pattern>/admin/assets/create</url-pattern>
+    </servlet-mapping>
 </web-app>
