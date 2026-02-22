@@ -66,6 +66,7 @@ public class users_delete_controller extends HttpServlet {
         String username = request.getParameter("userToEdit");
         
         HttpSession session = request.getSession();
+        User currentUser = (User) session.getAttribute("user");
         
         // 3. Kiểm tra tài khoản có tồn tại hay không
         if(!userDAO.isExist(username)) {
@@ -74,7 +75,14 @@ public class users_delete_controller extends HttpServlet {
             return;
         }
         
-        // 4. Delete tài khoản
+        // 4. Không được xóa tài khoản đang dùng
+        if (currentUser != null && currentUser.getUsername().equals(username)) {
+            session.setAttribute("flash_error", "Bạn không thể xóa tài khoản đang sử dụng!");
+            response.sendRedirect(request.getContextPath() + "/admin/users");
+            return;
+        }
+        
+        // 5. Delete tài khoản
         if (!userDAO.delete(username)) {
             session.setAttribute("flash_error", "Delete tài khoản thất bại");
             response.sendRedirect(request.getContextPath() + "/admin/users/edit?username=" + request.getParameter("userToEdit"));
