@@ -54,6 +54,11 @@
                         <td><%= i.typeName %></td>
                         <td><%= i.categoryName %></td>
                         <td><%= i.statusName %></td>
+                        <td>
+                            <a href="<%= request.getContextPath() %>/admin/assets/edit?assetId=<%= i.assetId %>">
+                                <button>Edit</button>
+                            </a>
+                        </td>
                     </tr>
                 <%
                         }

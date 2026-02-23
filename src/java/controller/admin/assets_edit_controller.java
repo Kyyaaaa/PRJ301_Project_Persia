@@ -1,25 +1,24 @@
 package controller.admin;
 
-import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import model.Asset;
 import model.AssetStatus;
 import model.AssetType;
-import model.dao.AssetTypeDAO;
-import model.Role;
-import model.dao.RoleDAO;
-import model.User;
-import model.View.AssetView;
+import model.DBContext;
 import model.dao.AssetDAO;
 import model.dao.AssetStatusDAO;
-import model.dao.UserDAO;
+import model.dao.AssetTypeDAO;
+import model.dao.RoleDAO;
 import utilities.Validate;
 
-public class assets_create_controller extends HttpServlet {
+public class assets_edit_controller extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -44,12 +43,26 @@ public class assets_create_controller extends HttpServlet {
         List<AssetType> list_type = new AssetTypeDAO().getAllAssetTypes();
         request.setAttribute("list_type", list_type);
         
-        // Forward the request to the JSP view to render the dashboard page
-        request.getRequestDispatcher("/WEB-INF/admin/assets_create.jsp")
-               .forward(request, response);
+        String assetId = request.getParameter("assetId");
+//        out.println(assetId);
+        
+        try {
+            if(new AssetDAO().isExist(assetId)) {
+                request.setAttribute("assetToEdit", assetId); // Đặt đối tượng user vào request
+                request.getRequestDispatcher("/WEB-INF/admin/assets_edit.jsp").forward(request, response);
+            } 
+            else {
+                 // Xử lý khi không tìm thấy asset
+                response.sendRedirect(request.getContextPath() + "/admin/assets/read");
+            }
+        }
+        catch(Exception e) { // Bắt các lỗi khác có thể xảy ra trong DAO
+           session.setAttribute("flash_error", "An error occurred while fetching user data: " + e.getMessage());
+           response.sendRedirect(request.getContextPath() + "/admin/assets/read");
+        }
 
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -61,38 +74,39 @@ public class assets_create_controller extends HttpServlet {
         String type_id = request.getParameter("type_id");
         String status_id = request.getParameter("status_id");
         
+        String assetId = request.getParameter("assetToEdit");
+
+        
         HttpSession session = request.getSession();
         
         // 2. Validate
         if (!Validate.validateAssetName(asset_name)) {
             session.setAttribute("flash_error", "Tên tài sản không được để trống và dưới 255 ký tự");
-            response.sendRedirect(request.getContextPath() + "/admin/assets/create");
+            response.sendRedirect(request.getContextPath() + "/admin/assets/edit?assetId=" + assetId);
             return; 
         }
         if (!Validate.validateTypeId(type_id)) {
             session.setAttribute("flash_error", "Loại tài sản không hợp lệ");
-            response.sendRedirect(request.getContextPath() + "/admin/assets/create");
+            response.sendRedirect(request.getContextPath() + "/admin/assets/edit?assetId=" + assetId);
             return; 
         }
         if (!Validate.validateStatusId(status_id)) {
             session.setAttribute("flash_error", "Trạng thái tài sản không hợp lệ");
-            response.sendRedirect(request.getContextPath() + "/admin/assets/create");
+            response.sendRedirect(request.getContextPath() + "/admin/assets/edit?assetId=" + assetId);
             return; 
+        }
+        if(!new AssetDAO().isExist(assetId)) {
+            session.setAttribute("flash_error", "Tài sản không tồn tại");
+            response.sendRedirect(request.getContextPath() + "/admin/assets/edit?assetId=" + assetId);
         }
         
-        // 3. Tạo tài sản mới
-        Asset asset = new AssetDAO().create(asset_name.trim(), Integer.parseInt(type_id), Integer.parseInt(status_id));
-
-        if (asset == null) {
-            session.setAttribute("flash_error", "Tạo tài sản thất bại");
-            response.sendRedirect(request.getContextPath() + "/admin/assets/create");
-            return; 
-        }
+        // 3. Cập nhật tài sản
+        Asset asset = new AssetDAO().update(Integer.parseInt(assetId), asset_name.trim(), Integer.parseInt(type_id), Integer.parseInt(status_id));
         
         // 4. Hiện thông báo và quay về
-        session.setAttribute("flash_success", "Tạo tài sản thành công");
+        session.setAttribute("flash_success", "Cập nhật tài sản thành công");
         response.sendRedirect(request.getContextPath() + "/admin/assets/read");
         
-//        out.println(asset_name + " " + type_id + " " + status_id);
+//        out.println(asset_name + " " + type_id + " " + status_id + " " + assetId);
     }
 }

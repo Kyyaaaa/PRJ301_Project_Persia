@@ -32,7 +32,6 @@ public class users_edit_controller extends HttpServlet {
             }
         }
         
-        
         String username = request.getParameter("username");
         if(utilities.Validate.validateUsername(username)) {
             try {

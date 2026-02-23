@@ -102,4 +102,49 @@ public class AssetDAO extends DBContext {
 
         return null;
     }
+    
+    public Asset update(int assetId, String assetName, Integer typeId, Integer statusId) {
+        String sql = """
+            UPDATE Assets
+            SET asset_name = ?, type_id = ?, status_id = ?
+            WHERE asset_id = ?
+        """;
+
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setString(1, assetName);
+            ps.setObject(2, typeId);
+            ps.setObject(3, statusId);
+            ps.setInt(4, assetId);
+
+            int affectedRows = ps.executeUpdate();
+
+            if (affectedRows > 0) {
+                return new Asset(assetId, assetName, typeId, statusId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    
+    public boolean isExist(String assetId) {
+        String sql = "SELECT 1 FROM Assets WHERE asset_id = ?";
+
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setString(1, assetId);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

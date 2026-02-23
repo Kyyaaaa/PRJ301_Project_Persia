@@ -10,6 +10,7 @@ import model.Role;
 import model.dao.RoleDAO;
 import model.User;
 import model.dao.UserDAO;
+import model.dao.RoleDAO;
 import utilities.Validate;
 
 public class users_create_controller extends HttpServlet {
@@ -28,6 +29,15 @@ public class users_create_controller extends HttpServlet {
                 session.removeAttribute("flash_error");
             }
         }
+        
+        List<Role> list_role = new RoleDAO().getAllRoles();
+        request.setAttribute("list_role", list_role);
+        
+//        out.println("Hi");
+//        for(Role i : list_role) {
+//            out.println(i.role_id + " " + i.role_name);
+//            out.println("<br>");
+//        }
         
         // Forward the request to the JSP view to render the dashboard page
         request.getRequestDispatcher("/WEB-INF/admin/users_create.jsp")
@@ -48,10 +58,18 @@ public class users_create_controller extends HttpServlet {
         HttpSession session = request.getSession();
         
         // 2. Validate username, password
-        if (!Validate.validateUsername(username) || !Validate.validatePassword(password) ||
-                role_id == null || (!role_id.equals("1") && !role_id.equals("2") && !role_id.equals("3"))
-                ) {   
-            session.setAttribute("flash_error", "Username / Password / Role không hợp lệ");
+        if (!Validate.validateUsername(username)) {   
+            session.setAttribute("flash_error", "Username phải từ 3-30 ký tự và không chứa ký tự đặc biệt");
+            response.sendRedirect(request.getContextPath() + "/admin/users/create");
+            return;
+        }
+        if (!Validate.validatePassword(password)) {   
+            session.setAttribute("flash_error", "Mật khẩu phải từ 3-12 ký tự và không chứa ký tự đặc biệt");
+            response.sendRedirect(request.getContextPath() + "/admin/users/create");
+            return;
+        }
+        if (!Validate.validateRoleId(role_id)) {   
+            session.setAttribute("flash_error", "Quyền hạn không hợp lệ");
             response.sendRedirect(request.getContextPath() + "/admin/users/create");
             return;
         }

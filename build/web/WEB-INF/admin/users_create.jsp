@@ -1,4 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.List" %>
+<%@page import="java.util.ArrayList" %>
+<%@page import="model.Role" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,9 +24,16 @@
                     <td>Role:</td>
                     <td>
                         <select name="role_id">
-                            <option value="1">admin</option>
-                            <option value="2">teacher</option>
-                            <option value="3">student</option>
+                        <%
+                            List<Role> list_role = (ArrayList<Role>)request.getAttribute("list_role");
+                            if(list_role != null) {
+                                for(Role i : list_role) {
+                        %>
+                                    <option value="<%= i.role_id %>"><%= i.role_name %></option>
+                        <%
+                                }
+                            }
+                        %>
                         </select>
                     </td>
                 </tr>

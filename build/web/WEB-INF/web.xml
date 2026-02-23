@@ -82,4 +82,13 @@
         <servlet-name>assets_create</servlet-name>
         <url-pattern>/admin/assets/create</url-pattern>
     </servlet-mapping>
+    <!-- Admin assets_edit servlet -->
+    <servlet>
+        <servlet-name>assets_edit</servlet-name>
+        <servlet-class>controller.admin.assets_edit_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>assets_edit</servlet-name>
+        <url-pattern>/admin/assets/edit</url-pattern>
+    </servlet-mapping>
 </web-app>
