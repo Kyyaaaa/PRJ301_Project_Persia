@@ -147,4 +147,26 @@ public class AssetDAO extends DBContext {
         }
         return false;
     }
+    
+    public boolean delete(String assetId) {
+        String sql = "DELETE FROM Assets WHERE asset_id = ?";
+
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            // Gán giá trị cho dấu hỏi chấm (?)
+            ps.setString(1, assetId);
+
+            // executeUpdate trả về số dòng bị ảnh hưởng
+            int rowsAffected = ps.executeUpdate();
+            
+            // Nếu số dòng > 0 nghĩa là đã có user bị xóa
+            return rowsAffected > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

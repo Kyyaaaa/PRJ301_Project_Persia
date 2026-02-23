@@ -91,4 +91,13 @@
         <servlet-name>assets_edit</servlet-name>
         <url-pattern>/admin/assets/edit</url-pattern>
     </servlet-mapping>
+    <!-- Admin assets_delete servlet -->
+    <servlet>
+        <servlet-name>assets_delete</servlet-name>
+        <servlet-class>controller.admin.assets_delete_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>assets_delete</servlet-name>
+        <url-pattern>/admin/assets/delete</url-pattern>
+    </servlet-mapping>
 </web-app>

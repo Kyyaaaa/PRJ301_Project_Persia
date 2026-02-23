@@ -59,6 +59,11 @@
                                 <button>Edit</button>
                             </a>
                         </td>
+                        <td>
+                            <a href="<%= request.getContextPath() %>/admin/assets/delete?assetId=<%= i.assetId %>">
+                                <button>Delete</button>
+                            </a>
+                        </td>
                     </tr>
                 <%
                         }
