@@ -10,6 +10,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/layout/admin_navbar.jsp" />
         <h1>Edit asset</h1>
         <form action="<%= request.getContextPath() %>/admin/assets/edit" method="post">
             <table>

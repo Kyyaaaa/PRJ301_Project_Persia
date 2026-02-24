@@ -6,6 +6,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/layout/admin_navbar.jsp" />
         <h1>
             Bạn có chắc chắn muốn xóa user này không?
         </h1>

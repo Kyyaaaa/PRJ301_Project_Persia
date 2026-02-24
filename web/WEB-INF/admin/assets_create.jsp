@@ -10,6 +10,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/layout/admin_navbar.jsp" />
         <h1>Create a new asset</h1>
         <form action="<%= request.getContextPath() %>/admin/assets/create" method="post">
             <table>

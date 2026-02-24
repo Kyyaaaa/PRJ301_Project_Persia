@@ -76,7 +76,6 @@ public class assets_edit_controller extends HttpServlet {
         
         String assetId = request.getParameter("assetToEdit");
 
-        
         HttpSession session = request.getSession();
         
         // 2. Validate

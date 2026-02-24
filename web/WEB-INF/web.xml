@@ -100,4 +100,32 @@
         <servlet-name>assets_delete</servlet-name>
         <url-pattern>/admin/assets/delete</url-pattern>
     </servlet-mapping>
+    
+    <!-- Admin classrooms_read servlet -->
+    <servlet>
+        <servlet-name>classrooms_read</servlet-name>
+        <servlet-class>controller.admin.classrooms_read_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>classrooms_read</servlet-name>
+        <url-pattern>/admin/classrooms/read</url-pattern>
+    </servlet-mapping>
+    <!-- Admin classrooms_create servlet -->
+    <servlet>
+        <servlet-name>classrooms_create</servlet-name>
+        <servlet-class>controller.admin.classrooms_create_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>classrooms_create</servlet-name>
+        <url-pattern>/admin/classrooms/create</url-pattern>
+    </servlet-mapping>
+    <!-- Admin classrooms_edit servlet -->
+    <servlet>
+        <servlet-name>classrooms_edit</servlet-name>
+        <servlet-class>controller.admin.classrooms_edit_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>classrooms_edit</servlet-name>
+        <url-pattern>/admin/classrooms/edit</url-pattern>
+    </servlet-mapping>
 </web-app>

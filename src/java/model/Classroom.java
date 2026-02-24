@@ -2,18 +2,43 @@ package model;
 
 public class Classroom {
 
-    public int classroom_id;
-    public String room_code;
-    public String room_name;
-    public String note;
+    public int classroomId;
+    public String classroomName;
+    public String location;
 
+    // Constructor không tham số
     public Classroom() {
     }
 
-    public Classroom(int classroom_id, String room_code, String room_name, String note) {
-        this.classroom_id = classroom_id;
-        this.room_code = room_code;
-        this.room_name = room_name;
-        this.note = note;
+    // Constructor đầy đủ
+    public Classroom(int classroomId, String classroomName, String location) {
+        this.classroomId = classroomId;
+        this.classroomName = classroomName;
+        this.location = location;
+    }
+
+    // Getter & Setter
+    public int getClassroomId() {
+        return classroomId;
+    }
+
+    public void setClassroomId(int classroomId) {
+        this.classroomId = classroomId;
+    }
+
+    public String getClassroomName() {
+        return classroomName;
+    }
+
+    public void setClassroomName(String classroomName) {
+        this.classroomName = classroomName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

@@ -15,6 +15,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/layout/admin_navbar.jsp" />
         <a href="<%= request.getContextPath() %>/admin/users/create">
             <button>Create New User</button>
         </a>

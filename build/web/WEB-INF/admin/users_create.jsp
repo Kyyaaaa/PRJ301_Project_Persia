@@ -9,6 +9,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/layout/admin_navbar.jsp" />
         <h1>Create a new user</h1>
         <form action="<%= request.getContextPath() %>/admin/users/create" method="post">
             <table>

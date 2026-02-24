@@ -56,4 +56,32 @@ public class Validate {
         }
         return false;
     }
+    
+    public static boolean validateClassroomName(String classroomName) {
+        if (classroomName == null) {
+            return false;
+        }
+
+        String trimmed = classroomName.trim();
+
+        if (trimmed.isEmpty()) {
+            return false;
+        }
+
+        return trimmed.length() <= 255;
+    }
+    
+    public static boolean validateLocation(String location) {
+        if (location == null) {
+            return false;
+        }
+
+        String trimmed = location.trim();
+
+        if (trimmed.isEmpty()) {
+            return false;
+        }
+
+        return trimmed.length() <= 255;
+    }
 }

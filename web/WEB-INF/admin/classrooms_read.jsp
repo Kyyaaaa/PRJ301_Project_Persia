@@ -1,11 +1,6 @@
-<%-- 
-    Document   : users
-    Created on : Feb 9, 2026, 8:54:44 PM
-    Author     : ADMIN
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.User" %>
+<%@page import="model.Asset" %>
+<%@page import="model.Classroom" %>
 <%@page import="java.util.List" %>
 <%@page import="java.util.ArrayList" %>
 <!DOCTYPE html>
@@ -16,8 +11,8 @@
     </head>
     <body>
         <jsp:include page="/WEB-INF/layout/admin_navbar.jsp" />
-        <a href="<%= request.getContextPath() %>/admin/users/create">
-            <button>Create New User</button>
+        <a href="<%= request.getContextPath() %>/admin/classrooms/create">
+            <button>Create New Classroom</button>
         </a>
         
         <%
@@ -41,29 +36,24 @@
         <table>
             <thead>
                 <tr>
-                    <th>Username</th>
-                    <th>Password</th>
-                    <th>Role</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Location</th>
                 </tr>
             </thead>
             <tbody>
                 <%
-                    List<User> users = (ArrayList<User>)request.getAttribute("users");
-                    if(users != null) {
-                        for(User user : users) {
+                    List<Classroom> list = (ArrayList<Classroom>)request.getAttribute("list");
+                    if(list != null) {
+                        for(Classroom i : list) {
                 %>
                     <tr>
-                        <td><%= user.username %></td>
-                        <td><%= user.password %></td>
-                        <td><%= user.role_id %></td>
+                        <td><%= i.classroomId %></td>
+                        <td><%= i.classroomName %></td>
+                        <td><%= i.location %></td>
                         <td>
-                            <a href="<%= request.getContextPath() %>/admin/users/edit?username=<%= user.username %>">
-                                <button>Update</button>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="<%= request.getContextPath() %>/admin/users/delete?username=<%= user.username %>">
-                                <button>Delete</button>
+                            <a href="<%= request.getContextPath() %>/admin/classrooms/edit?classroomId=<%= i.classroomId %>">
+                                <button>Edit</button>
                             </a>
                         </td>
                     </tr>
