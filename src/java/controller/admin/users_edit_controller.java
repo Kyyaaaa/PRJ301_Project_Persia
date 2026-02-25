@@ -72,7 +72,7 @@ public class users_edit_controller extends HttpServlet {
         if (!Validate.validateUsername(username) || !Validate.validatePassword(password) ||
                 !Validate.validateRoleId(role_id)
                 ) {   
-            session.setAttribute("flash_error", "Password / Role không hợp lệ");
+            session.setAttribute("flash_error", "Invalid Password / Role");
 //            out.println("Sai format r thang ngu");
 //            out.println(request.getParameter("userToEdit"));
             response.sendRedirect(request.getContextPath() + "/admin/users/edit?username=" + request.getParameter("userToEdit"));
@@ -87,19 +87,19 @@ public class users_edit_controller extends HttpServlet {
         
         // 3. Kiểm tra tài khoản có tồn tại hay không
         if(!userDAO.isExist(username)) {
-            session.setAttribute("flash_error", "Username không tồn tại");
+            session.setAttribute("flash_error", "Username does not exist");
             response.sendRedirect(request.getContextPath() + "/admin/users/create");
             return;
         }
         
         // 4. Update tài khoản
         if (!userDAO.update(username, password, Integer.parseInt(role_id))) {
-            session.setAttribute("flash_error", "Update tài khoản thất bại");
+            session.setAttribute("flash_error", "Failed to update user");
             response.sendRedirect(request.getContextPath() + "/admin/users/edit?username=" + request.getParameter("userToEdit"));
             return; 
         }
         
-        session.setAttribute("flash_success", "Update user thành công");
+        session.setAttribute("flash_success", "User updated successfully");
         response.sendRedirect(request.getContextPath() + "/admin/users");
     }
 }

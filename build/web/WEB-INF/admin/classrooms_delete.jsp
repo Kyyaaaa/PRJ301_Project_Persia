@@ -8,12 +8,12 @@
     <body>
         <jsp:include page="/WEB-INF/layout/admin_navbar.jsp" />
         <h1>
-            Are you sure you want to delete this user?
+            Are you sure you want to delete this classroom?
         </h1>
-        <form action="<%= request.getContextPath() %>/admin/users/delete" method="post">
+        <form action="<%= request.getContextPath() %>/admin/classrooms/delete" method="post">
             <button type="submit">Confirm</button>
             
-            <input type="hidden" name="userToEdit" value="<%= (String) request.getAttribute("userToEdit")%>">
+            <input type="hidden" name="classroomToEdit" value="<%= (String) request.getAttribute("classroomToEdit")%>">
         </form>
 
     </body>

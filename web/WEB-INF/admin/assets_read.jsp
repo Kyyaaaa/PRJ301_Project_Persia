@@ -12,7 +12,7 @@
     <body>
         <jsp:include page="/WEB-INF/layout/admin_navbar.jsp" />
         <a href="<%= request.getContextPath() %>/admin/assets/create">
-            <button>Create New Asset</button>
+            <button>Create a new asset</button>
         </a>
         
         <%

@@ -49,12 +49,12 @@ public class classrooms_create_controller extends HttpServlet {
         
         // 2. Validate
         if (!Validate.validateClassroomName(classroom_name)) {
-            session.setAttribute("flash_error", "Tên lớp học không hợp lệ");
+            session.setAttribute("flash_error", "Invalid room name");
             response.sendRedirect(request.getContextPath() + "/admin/classrooms/create");
             return; 
         }
         if (!Validate.validateLocation(location)) {
-            session.setAttribute("flash_error", "Vị trí không hợp lệ");
+            session.setAttribute("flash_error", "Invalid location");
             response.sendRedirect(request.getContextPath() + "/admin/classrooms/create");
             return; 
         }
@@ -63,13 +63,13 @@ public class classrooms_create_controller extends HttpServlet {
         Classroom classroom = new ClassroomDAO().create(classroom_name.trim(), location.trim());
         
         if (classroom == null) {
-            session.setAttribute("flash_error", "Tạo lớp học thất bại");
+            session.setAttribute("flash_error", "Failed to create classroom");
             response.sendRedirect(request.getContextPath() + "/admin/classrooms/create");
             return; 
         }
         
         // 4. Hiện thông báo và quay về
-        session.setAttribute("flash_success", "Tạo lớp học thành công");
+        session.setAttribute("flash_success", "Classroom created successfully");
         response.sendRedirect(request.getContextPath() + "/admin/classrooms/read");
     }
 }

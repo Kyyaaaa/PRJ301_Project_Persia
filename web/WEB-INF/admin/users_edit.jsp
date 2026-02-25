@@ -8,7 +8,7 @@
     <body>
         <jsp:include page="/WEB-INF/layout/admin_navbar.jsp" />
         <h1>
-            Update user
+            Edit a user
         </h1>
         <form action="<%= request.getContextPath() %>/admin/users/edit" method="post">
             <table>

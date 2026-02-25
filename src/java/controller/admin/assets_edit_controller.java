@@ -80,22 +80,22 @@ public class assets_edit_controller extends HttpServlet {
         
         // 2. Validate
         if (!Validate.validateAssetName(asset_name)) {
-            session.setAttribute("flash_error", "Tên tài sản không được để trống và dưới 255 ký tự");
+            session.setAttribute("flash_error", "Asset name must not be empty and must not exceed 255 characters");
             response.sendRedirect(request.getContextPath() + "/admin/assets/edit?assetId=" + assetId);
             return; 
         }
         if (!Validate.validateTypeId(type_id)) {
-            session.setAttribute("flash_error", "Loại tài sản không hợp lệ");
+            session.setAttribute("flash_error", "Invalid asset type");
             response.sendRedirect(request.getContextPath() + "/admin/assets/edit?assetId=" + assetId);
             return; 
         }
         if (!Validate.validateStatusId(status_id)) {
-            session.setAttribute("flash_error", "Trạng thái tài sản không hợp lệ");
+            session.setAttribute("flash_error", "Invalid asset status");
             response.sendRedirect(request.getContextPath() + "/admin/assets/edit?assetId=" + assetId);
             return; 
         }
         if(!new AssetDAO().isExist(assetId)) {
-            session.setAttribute("flash_error", "Tài sản không tồn tại");
+            session.setAttribute("flash_error", "Asset does not exist");
             response.sendRedirect(request.getContextPath() + "/admin/assets/edit?assetId=" + assetId);
         }
         
@@ -103,7 +103,7 @@ public class assets_edit_controller extends HttpServlet {
         Asset asset = new AssetDAO().update(Integer.parseInt(assetId), asset_name.trim(), Integer.parseInt(type_id), Integer.parseInt(status_id));
         
         // 4. Hiện thông báo và quay về
-        session.setAttribute("flash_success", "Cập nhật tài sản thành công");
+        session.setAttribute("flash_success", "Asset updated successfully");
         response.sendRedirect(request.getContextPath() + "/admin/assets/read");
         
 //        out.println(asset_name + " " + type_id + " " + status_id + " " + assetId);

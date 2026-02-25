@@ -59,17 +59,17 @@ public class users_create_controller extends HttpServlet {
         
         // 2. Validate username, password
         if (!Validate.validateUsername(username)) {   
-            session.setAttribute("flash_error", "Username phải từ 3-30 ký tự và không chứa ký tự đặc biệt");
+            session.setAttribute("flash_error", "Username must be between 3 and 30 characters long and must not contain special characters");
             response.sendRedirect(request.getContextPath() + "/admin/users/create");
             return;
         }
         if (!Validate.validatePassword(password)) {   
-            session.setAttribute("flash_error", "Mật khẩu phải từ 3-12 ký tự và không chứa ký tự đặc biệt");
+            session.setAttribute("flash_error", "Password must be between 3 and 12 characters long and must not contain special characters");
             response.sendRedirect(request.getContextPath() + "/admin/users/create");
             return;
         }
         if (!Validate.validateRoleId(role_id)) {   
-            session.setAttribute("flash_error", "Quyền hạn không hợp lệ");
+            session.setAttribute("flash_error", "Invalid role");
             response.sendRedirect(request.getContextPath() + "/admin/users/create");
             return;
         }
@@ -77,7 +77,7 @@ public class users_create_controller extends HttpServlet {
         // 3. Kiểm tra tài khoản đã tồn tại hay chưa bằng DAO
         UserDAO dao = new UserDAO();
         if(dao.isExist(username)) {
-            session.setAttribute("flash_error", "Username đã tồn tại");
+            session.setAttribute("flash_error", "Username already exists");
             response.sendRedirect(request.getContextPath() + "/admin/users/create");
             return;
         }
@@ -86,13 +86,13 @@ public class users_create_controller extends HttpServlet {
         User user = dao.register(username, password, Integer.parseInt(role_id));
 
         if (user == null) {
-            session.setAttribute("flash_error", "Tạo tài khoản thất bại");
+            session.setAttribute("flash_error", "Failed to create account");
             response.sendRedirect(request.getContextPath() + "/admin/users/create");
             return; 
         }
         
         // 5. Hiện thông báo và quay về /admin/users
-        session.setAttribute("flash_success", "Tạo user thành công");
+        session.setAttribute("flash_success", "User created successfully");
         response.sendRedirect(request.getContextPath() + "/admin/users");
     }
 }

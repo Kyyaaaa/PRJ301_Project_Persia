@@ -10,11 +10,11 @@
     </head>
     <body>
         <jsp:include page="/WEB-INF/layout/admin_navbar.jsp" />
-        <h1>Edit classroom</h1>
+        <h1>Edit a classroom</h1>
         <form action="<%= request.getContextPath() %>/admin/classrooms/edit" method="post">
             <table>
                 <tr>
-                    <td>Name:</td>
+                    <td>Room name:</td>
                     <td><input type="text" name="classroom_name" required></td>
                 </tr>
                 <tr>

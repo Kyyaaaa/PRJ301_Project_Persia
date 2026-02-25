@@ -8,7 +8,7 @@
     <body>
         <jsp:include page="/WEB-INF/layout/admin_navbar.jsp" />
         <h1>
-            Bạn có chắc chắn muốn xóa tài sản này không?
+            Are you sure you want to delete this asset?
         </h1>
         <form action="<%= request.getContextPath() %>/admin/assets/delete" method="post">
             <button type="submit">Confirm</button>

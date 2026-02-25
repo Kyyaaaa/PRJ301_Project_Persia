@@ -128,4 +128,13 @@
         <servlet-name>classrooms_edit</servlet-name>
         <url-pattern>/admin/classrooms/edit</url-pattern>
     </servlet-mapping>
+    <!-- Admin classrooms_delete servlet -->
+    <servlet>
+        <servlet-name>classrooms_delete</servlet-name>
+        <servlet-class>controller.admin.classrooms_delete_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>classrooms_delete</servlet-name>
+        <url-pattern>/admin/classrooms/delete</url-pattern>
+    </servlet-mapping>
 </web-app>

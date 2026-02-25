@@ -37,6 +37,9 @@ public class users_controller extends HttpServlet {
         List<User> users = new UserDAO().getAllUsers();
         request.setAttribute("users", users);
         
+        List<Role> list_role = new RoleDAO().getAllRoles();
+        request.setAttribute("list_role", list_role);
+        
         request.setAttribute("size", users.size());
         StringBuffer lol = new StringBuffer("");
         for(User i : users) lol.append(i.username);

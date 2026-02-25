@@ -14,7 +14,7 @@
         <form action="<%= request.getContextPath() %>/admin/classrooms/create" method="post">
             <table>
                 <tr>
-                    <td>Name:</td>
+                    <td>Room name:</td>
                     <td><input type="text" name="classroom_name" required></td>
                 </tr>
                 <tr>

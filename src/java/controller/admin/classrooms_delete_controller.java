@@ -19,7 +19,7 @@ import utilities.Validate;
  *
  * @author ADMIN
  */
-public class classrooms_edit_controller extends HttpServlet {
+public class classrooms_delete_controller extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -42,7 +42,7 @@ public class classrooms_edit_controller extends HttpServlet {
         try {
             if(new ClassroomDAO().isExist(classroomId)) {
                 request.setAttribute("classroomToEdit", classroomId); // Đặt đối tượng user vào request
-                request.getRequestDispatcher("/WEB-INF/admin/classrooms_edit.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/admin/classrooms_delete.jsp").forward(request, response);
             } 
             else {
                  // Xử lý khi không tìm thấy asset
@@ -62,35 +62,24 @@ public class classrooms_edit_controller extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         // 1. Lấy dữ liệu từ form
-        String classroom_name = request.getParameter("classroom_name");
-        String location = request.getParameter("location");
-        
         String classroomId = request.getParameter("classroomToEdit");
         HttpSession session = request.getSession();
         
-        // 2. Validate
-        if (!Validate.validateClassroomName(classroom_name)) {
-            session.setAttribute("flash_error", "Invalid room name");
-            response.sendRedirect(request.getContextPath() + "/admin/classrooms/create");
-            return; 
-        }
-        if (!Validate.validateLocation(location)) {
-            session.setAttribute("flash_error", "Invalid location");
-            response.sendRedirect(request.getContextPath() + "/admin/classrooms/create");
-            return; 
+        // 2. Kiểm tra asset có tồn tại hay không
+        if(!new ClassroomDAO().isExist(classroomId)) {
+            session.setAttribute("flash_error", "Classroom does not exist");
+            response.sendRedirect(request.getContextPath() + "/admin/classrooms/read");
+            return;
         }
         
-        // 3. Cập nhật
-        Classroom classroom = new ClassroomDAO().update(Integer.parseInt(classroomId), classroom_name.trim(), location.trim());
-        
-        if (classroom == null) {
-            session.setAttribute("flash_error", "Failed to update classroom");
-            response.sendRedirect(request.getContextPath() + "/admin/classrooms/create");
+        // 3. Delete
+        if (!new ClassroomDAO().delete(classroomId)) {
+            session.setAttribute("flash_error", "Failed to delete classroom");
+            response.sendRedirect(request.getContextPath() + "/admin/classrooms/edit?classroomId=" + classroomId);
             return; 
         }
         
-        // 4. Hiện thông báo và quay về
-        session.setAttribute("flash_success", "Classroom updated successfully");
+        session.setAttribute("flash_success", "Classroom deleted successfully");
         response.sendRedirect(request.getContextPath() + "/admin/classrooms/read");
     }
     

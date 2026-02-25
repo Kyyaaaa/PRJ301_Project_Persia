@@ -61,19 +61,19 @@ public class assets_delete_controller extends HttpServlet {
         
         // 2. Kiểm tra asset có tồn tại hay không
         if(!new AssetDAO().isExist(assetId)) {
-            session.setAttribute("flash_error", "Tài sản không tồn tại");
+            session.setAttribute("flash_error", "Asset does not exist");
             response.sendRedirect(request.getContextPath() + "/admin/assets/read");
             return;
         }
         
         // 3. Delete tài khoản
         if (!new AssetDAO().delete(assetId)) {
-            session.setAttribute("flash_error", "Delete tài sản thất bại");
+            session.setAttribute("flash_error", "Failed to delete asset");
             response.sendRedirect(request.getContextPath() + "/admin/assets/edit?assetId=" + assetId);
             return; 
         }
 //        
-        session.setAttribute("flash_success", "Delete tài sản thành công");
+        session.setAttribute("flash_success", "Asset deleted successfully");
         response.sendRedirect(request.getContextPath() + "/admin/assets/read");
         
 //        out.println("Post");

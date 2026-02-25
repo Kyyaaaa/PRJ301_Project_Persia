@@ -12,7 +12,7 @@
     <body>
         <jsp:include page="/WEB-INF/layout/admin_navbar.jsp" />
         <a href="<%= request.getContextPath() %>/admin/classrooms/create">
-            <button>Create New Classroom</button>
+            <button>Create a new classroom</button>
         </a>
         
         <%
@@ -37,7 +37,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
+                    <th>Room name</th>
                     <th>Location</th>
                 </tr>
             </thead>
@@ -54,6 +54,11 @@
                         <td>
                             <a href="<%= request.getContextPath() %>/admin/classrooms/edit?classroomId=<%= i.classroomId %>">
                                 <button>Edit</button>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="<%= request.getContextPath() %>/admin/classrooms/delete?classroomId=<%= i.classroomId %>">
+                                <button>Delete</button>
                             </a>
                         </td>
                     </tr>

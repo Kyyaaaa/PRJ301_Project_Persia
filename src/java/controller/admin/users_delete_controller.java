@@ -70,26 +70,26 @@ public class users_delete_controller extends HttpServlet {
         
         // 3. Kiểm tra tài khoản có tồn tại hay không
         if(!userDAO.isExist(username)) {
-            session.setAttribute("flash_error", "Username không tồn tại");
+            session.setAttribute("flash_error", "Username does not exists");
             response.sendRedirect(request.getContextPath() + "/admin/users/create");
             return;
         }
         
         // 4. Không được xóa tài khoản đang dùng
         if (currentUser != null && currentUser.getUsername().equals(username)) {
-            session.setAttribute("flash_error", "Bạn không thể xóa tài khoản đang sử dụng!");
+            session.setAttribute("flash_error", "You can't delete the account you are using!");
             response.sendRedirect(request.getContextPath() + "/admin/users");
             return;
         }
         
         // 5. Delete tài khoản
         if (!userDAO.delete(username)) {
-            session.setAttribute("flash_error", "Delete tài khoản thất bại");
+            session.setAttribute("flash_error", "Failed to delete user");
             response.sendRedirect(request.getContextPath() + "/admin/users/edit?username=" + request.getParameter("userToEdit"));
             return; 
         }
         
-        session.setAttribute("flash_success", "Delete user thành công");
+        session.setAttribute("flash_success", "User deleted successfully");
         response.sendRedirect(request.getContextPath() + "/admin/users");
     }
 }

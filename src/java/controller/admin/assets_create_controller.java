@@ -65,17 +65,17 @@ public class assets_create_controller extends HttpServlet {
         
         // 2. Validate
         if (!Validate.validateAssetName(asset_name)) {
-            session.setAttribute("flash_error", "Tên tài sản không được để trống và dưới 255 ký tự");
+            session.setAttribute("flash_error", "Asset name must not be empty and must not exceed 255 characters");
             response.sendRedirect(request.getContextPath() + "/admin/assets/create");
             return; 
         }
         if (!Validate.validateTypeId(type_id)) {
-            session.setAttribute("flash_error", "Loại tài sản không hợp lệ");
+            session.setAttribute("flash_error", "Invalid asset type");
             response.sendRedirect(request.getContextPath() + "/admin/assets/create");
             return; 
         }
         if (!Validate.validateStatusId(status_id)) {
-            session.setAttribute("flash_error", "Trạng thái tài sản không hợp lệ");
+            session.setAttribute("flash_error", "Invalid asset status");
             response.sendRedirect(request.getContextPath() + "/admin/assets/create");
             return; 
         }
@@ -84,13 +84,13 @@ public class assets_create_controller extends HttpServlet {
         Asset asset = new AssetDAO().create(asset_name.trim(), Integer.parseInt(type_id), Integer.parseInt(status_id));
 
         if (asset == null) {
-            session.setAttribute("flash_error", "Tạo tài sản thất bại");
+            session.setAttribute("flash_error", "Failed to create asset");
             response.sendRedirect(request.getContextPath() + "/admin/assets/create");
             return; 
         }
         
         // 4. Hiện thông báo và quay về
-        session.setAttribute("flash_success", "Tạo tài sản thành công");
+        session.setAttribute("flash_success", "Asset created successfully");
         response.sendRedirect(request.getContextPath() + "/admin/assets/read");
         
 //        out.println(asset_name + " " + type_id + " " + status_id);
