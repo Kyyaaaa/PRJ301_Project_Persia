@@ -6,8 +6,11 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.User" %>
+<%@page import="model.Role" %>
 <%@page import="java.util.List" %>
 <%@page import="java.util.ArrayList" %>
+<%@page import="java.util.Map" %>
+<%@page import="java.util.HashMap" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,8 +18,9 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/layout/admin_navbar.jsp" />
         <a href="<%= request.getContextPath() %>/admin/users/create">
-            <button>Create New User</button>
+            <button>Create a new user</button>
         </a>
         
         <%
@@ -48,16 +52,25 @@
             <tbody>
                 <%
                     List<User> users = (ArrayList<User>)request.getAttribute("users");
+                    List<Role> list_role = (ArrayList<Role>)request.getAttribute("list_role");
+                    
+                    Map<Integer, String> roleMap = new HashMap<>();
+                    if (list_role != null) {
+                        for (Role role : list_role) {
+                            roleMap.put(role.role_id, role.role_name);
+                        }
+                    }
+                    
                     if(users != null) {
                         for(User user : users) {
                 %>
                     <tr>
                         <td><%= user.username %></td>
                         <td><%= user.password %></td>
-                        <td><%= user.role_id %></td>
+                        <td><%= roleMap.get(user.role_id) %></td>
                         <td>
                             <a href="<%= request.getContextPath() %>/admin/users/edit?username=<%= user.username %>">
-                                <button>Update</button>
+                                <button>Edit</button>
                             </a>
                         </td>
                         <td>

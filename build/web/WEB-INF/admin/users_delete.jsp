@@ -6,8 +6,9 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/layout/admin_navbar.jsp" />
         <h1>
-            Bạn có chắc chắn muốn xóa user này không?
+            Are you sure you want to delete this user?
         </h1>
         <form action="<%= request.getContextPath() %>/admin/users/delete" method="post">
             <button type="submit">Confirm</button>
