@@ -1,0 +1,69 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Asset" %>
+<%@page import="model.View.AssetView" %>
+<%@page import="java.util.List" %>
+<%@page import="java.util.ArrayList" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <jsp:include page="/WEB-INF/layout/app_navbar.jsp" />
+        <a href="<%= request.getContextPath() %>/app/assets/request">
+            <button>Request to borrow asset</button>
+        </a>
+        <a href="<%= request.getContextPath() %>/app/assets/report">
+            <button>Report asset</button>
+        </a>
+        
+        <%
+            String success = (String) request.getAttribute("success");
+            if (success != null) {
+        %>
+            <p style="color:green;"><%= success %></p>
+        <%
+            }
+        %>
+        
+        <%
+            String error = (String) request.getAttribute("error");
+            if (error != null) {
+        %>
+            <p style="color:red;"><%= error %></p>
+        <%
+            }
+        %>
+            
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    List<AssetView> list = (ArrayList<AssetView>)request.getAttribute("list");
+                    if(list != null) {
+                        for(AssetView i : list) {
+                %>
+                    <tr>
+                        <td><%= i.assetId %></td>
+                        <td><%= i.assetName %></td>
+                        <td><%= i.typeName %></td>
+                        <td><%= i.categoryName %></td>
+                        <td><%= i.statusName %></td>
+                    </tr>
+                <%
+                        }
+                    }
+                %>
+            </tbody>
+        </table>
+    </body>
+</html>

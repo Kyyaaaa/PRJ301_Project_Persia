@@ -137,4 +137,42 @@
         <servlet-name>classrooms_delete</servlet-name>
         <url-pattern>/admin/classrooms/delete</url-pattern>
     </servlet-mapping>
+    
+    <!-- App dashboard servlet -->
+    <servlet>
+        <servlet-name>app_dashboard</servlet-name>
+        <servlet-class>controller.app.dashboard_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>app_dashboard</servlet-name>
+        <url-pattern>/app/dashboard</url-pattern>
+    </servlet-mapping>
+    <!-- App assets servlet -->
+    <servlet>
+        <servlet-name>app_assets</servlet-name>
+        <servlet-class>controller.app.assets_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>app_assets</servlet-name>
+        <url-pattern>/app/assets</url-pattern>
+    </servlet-mapping>
+    <!-- App assets_request servlet -->
+    <servlet>
+        <servlet-name>app_request</servlet-name>
+        <servlet-class>controller.app.assets_request_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>app_request</servlet-name>
+        <url-pattern>/app/assets/request</url-pattern>
+    </servlet-mapping>
+    
+    <!-- App classrooms servlet -->
+    <servlet>
+        <servlet-name>app_classrooms</servlet-name>
+        <servlet-class>controller.app.classrooms_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>app_classrooms</servlet-name>
+        <url-pattern>/app/classrooms</url-pattern>
+    </servlet-mapping>
 </web-app>
