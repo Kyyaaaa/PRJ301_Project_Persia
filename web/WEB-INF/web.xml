@@ -175,4 +175,54 @@
         <servlet-name>app_classrooms</servlet-name>
         <url-pattern>/app/classrooms</url-pattern>
     </servlet-mapping>
+    
+    <!-- App my-requests servlet -->
+    <servlet>
+        <servlet-name>app_my-requests</servlet-name>
+        <servlet-class>controller.app.my_requests_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>app_my-requests</servlet-name>
+        <url-pattern>/app/my-requests</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Admin requests servlet -->
+    <servlet>
+        <servlet-name>requests</servlet-name>
+        <servlet-class>controller.admin.requests_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>requests</servlet-name>
+        <url-pattern>/admin/requests</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Admin requests_delete servlet -->
+    <servlet>
+        <servlet-name>requests_delete</servlet-name>
+        <servlet-class>controller.admin.requests_delete_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>requests_delete</servlet-name>
+        <url-pattern>/admin/requests/delete</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Admin requests_edit servlet -->
+    <servlet>
+        <servlet-name>requests_edit</servlet-name>
+        <servlet-class>controller.admin.requests_edit_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>requests_edit</servlet-name>
+        <url-pattern>/admin/requests/edit</url-pattern>
+    </servlet-mapping>
+    
+    <!-- App asset-assignments servlet -->
+    <servlet>
+        <servlet-name>asset-assignments</servlet-name>
+        <servlet-class>controller.app.asset_assignments_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>asset-assignments</servlet-name>
+        <url-pattern>/app/asset-assignments</url-pattern>
+    </servlet-mapping>
 </web-app>

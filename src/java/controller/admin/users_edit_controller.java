@@ -67,6 +67,8 @@ public class users_edit_controller extends HttpServlet {
         String role_id = request.getParameter("role_id");
         
         HttpSession session = request.getSession();
+        User currentUser = (User) session.getAttribute("user");
+        int currentRole_Id = currentUser.role_id;
         
         // 2. Validate username, password
         if (!Validate.validateUsername(username) || !Validate.validatePassword(password) ||
@@ -92,7 +94,14 @@ public class users_edit_controller extends HttpServlet {
             return;
         }
         
-        // 4. Update tài khoản
+        // 4. Không cho tự hạ quyền của chính mình
+        if (currentUser != null && currentUser.getUsername().equals(username) && currentRole_Id != Integer.parseInt(role_id)) {
+            session.setAttribute("flash_error", "You can't change your own role!");
+            response.sendRedirect(request.getContextPath() + "/admin/users");
+            return;
+        }
+        
+        // 5. Update tài khoản
         if (!userDAO.update(username, password, Integer.parseInt(role_id))) {
             session.setAttribute("flash_error", "Failed to update user");
             response.sendRedirect(request.getContextPath() + "/admin/users/edit?username=" + request.getParameter("userToEdit"));

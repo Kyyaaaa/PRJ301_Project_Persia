@@ -32,7 +32,6 @@ public class users_delete_controller extends HttpServlet {
             }
         }
         
-        
         String username = request.getParameter("username");
         if(utilities.Validate.validateUsername(username)) {
             try {
@@ -49,7 +48,6 @@ public class users_delete_controller extends HttpServlet {
                session.setAttribute("flash_error", "An error occurred while fetching user data: " + e.getMessage());
                response.sendRedirect(request.getContextPath() + "/admin/users");
             }
-
         }
         
 //        out.println(username);

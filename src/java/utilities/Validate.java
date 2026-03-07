@@ -84,4 +84,31 @@ public class Validate {
 
         return trimmed.length() <= 255;
     }
+    
+    public static boolean validateRequestId(String requestId) {
+        if (requestId == null) {
+            return false;
+        }
+
+        String trimmed = requestId.trim();
+
+        if (trimmed.isEmpty()) {
+            return false;
+        }
+
+        try {
+            int id = Integer.parseInt(trimmed);
+            return id > 0;   // request_id phải là số dương
+        } catch (NumberFormatException e) {
+            return false;    // không phải số
+        }
+    }
+    
+    public static boolean validateAssetRequestStatus(String status) {
+        return status.equals("APPROVE") || status.equals("REJECT");
+    }
+    
+    public static boolean validateAssetRequestReviewNote(String reviewNote) {
+        return reviewNote.length() <= 255;
+    }
 }
