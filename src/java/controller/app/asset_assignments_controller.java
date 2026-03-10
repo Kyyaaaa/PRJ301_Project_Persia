@@ -8,8 +8,9 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import model.View.AssetView;
-import model.dao.AssetDAO;
+import model.AssetAssignment;
+import model.User;
+import model.dao.AssetAssignmentDAO;
 
 public class asset_assignments_controller extends HttpServlet {
     
@@ -34,13 +35,14 @@ public class asset_assignments_controller extends HttpServlet {
             }
         }
         
-//        List<AssetView> list = new AssetDAO().getAllAssetViews();
-//        request.setAttribute("list", list);
+        User user = (User)session.getAttribute("user");
+        List<AssetAssignment> list = new AssetAssignmentDAO().getAllFromUser(user.username);
+        request.setAttribute("list", list);
         
-//        request.getRequestDispatcher("/WEB-INF/app/assets.jsp")
-//               .forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/app/asset-assignments.jsp")
+               .forward(request, response);
         
-        out.println("Get");
+//        out.println("Get");
     }
     
     @Override

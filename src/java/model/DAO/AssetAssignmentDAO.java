@@ -1,5 +1,71 @@
 package model.dao;
 
-public class AssetAssignmentDAO {
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import model.AssetAssignment;
+import model.DBContext;
+
+public class AssetAssignmentDAO extends DBContext {
     
+    public List<AssetAssignment> getAllAssetAssignments() {
+        String sql = "select * from AssetAssignment";
+        
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ResultSet rs = ps.executeQuery();
+            
+            List<AssetAssignment> list = new ArrayList<>();
+            while (rs.next()) {
+                AssetAssignment i = new AssetAssignment(
+                    rs.getInt("assignment_id"),
+                    rs.getInt("asset_id"),
+                    rs.getInt("classroom_id"),
+                    rs.getDate("assigned_date"),
+                    rs.getDate("return_date"),
+                    rs.getString("assigned_by")
+                );
+
+                list.add(i);
+            }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public List<AssetAssignment> getAllFromUser(String username) {
+        String sql = "select * from AssetAssignment where assigned_by = ?";
+        
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            
+            List<AssetAssignment> list = new ArrayList<>();
+            while (rs.next()) {
+                AssetAssignment i = new AssetAssignment(
+                    rs.getInt("assignment_id"),
+                    rs.getInt("asset_id"),
+                    rs.getInt("classroom_id"),
+                    rs.getDate("assigned_date"),
+                    rs.getDate("return_date"),
+                    rs.getString("assigned_by")
+                );
+
+                list.add(i);
+            }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

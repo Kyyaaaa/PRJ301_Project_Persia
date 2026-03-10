@@ -1,6 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.Asset" %>
-<%@page import="model.View.AssetView" %>
+<%@page import="model.AssetAssignment" %>
 <%@page import="java.util.List" %>
 <%@page import="java.util.ArrayList" %>
 <!DOCTYPE html>
@@ -30,29 +29,31 @@
             }
         %>
             
-        <table>
+        <table border="1">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Category</th>
-                    <th>Status</th>
+                    <th>Assignment ID</th>
+                    <th>Asset ID</th>
+                    <th>Classroom ID</th>
+                    <th>Assigned Date</th>
+                    <th>Return Date</th>
+                    <th>Assigned By</th>
                 </tr>
             </thead>
             <tbody>
                 <%
-                    List<AssetView> list = (ArrayList<AssetView>)request.getAttribute("list");
+                    List<AssetAssignment> list = (ArrayList<AssetAssignment>)request.getAttribute("list");
                     if(list != null) {
-                        for(AssetView i : list) {
+                        for(AssetAssignment i : list) {
                 %>
-                    <tr>
-                        <td><%= i.assetId %></td>
-                        <td><%= i.assetName %></td>
-                        <td><%= i.typeName %></td>
-                        <td><%= i.categoryName %></td>
-                        <td><%= i.statusName %></td>
-                    </tr>
+                <tr>
+                    <td><%= i.assignmentId %></td>
+                    <td><%= i.assetId %></td>
+                    <td><%= i.classroomId %></td>
+                    <td><%= i.assignedDate %></td>
+                    <td><%= i.returnDate %></td>
+                    <td><%= i.assignedBy %></td>
+                </tr>
                 <%
                         }
                     }
