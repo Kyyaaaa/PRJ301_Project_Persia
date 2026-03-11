@@ -20,7 +20,22 @@ public class my_requests_controller extends HttpServlet {
         response.setContentType("text/html; charset = UTF-8");
         PrintWriter out = response.getWriter();
         
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            String success = (String) session.getAttribute("flash_success");
+            if (success != null) {
+                request.setAttribute("success", success);
+                session.removeAttribute("flash_success");
+            }
+            
+            String error = (String) session.getAttribute("flash_error");
+            if (error != null) {
+                request.setAttribute("error", error);
+                session.removeAttribute("flash_error");
+            }
+        }
+        
+        session = request.getSession();
         User user = (User) session.getAttribute("user");
         
         List<AssetRequest> listAssetRequest = new AssetRequestDAO().getAssetRequestsByUsername(user.username);

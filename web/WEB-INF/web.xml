@@ -235,4 +235,13 @@
         <servlet-name>asset-assignments_delete</servlet-name>
         <url-pattern>/app/asset-assignments/delete</url-pattern>
     </servlet-mapping>
+    <!-- App my-requests_delete servlet -->
+    <servlet>
+        <servlet-name>app_my-requests_delete</servlet-name>
+        <servlet-class>controller.app.my_requests_delete_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>app_my-requests_delete</servlet-name>
+        <url-pattern>/app/my-requests/delete</url-pattern>
+    </servlet-mapping>
 </web-app>

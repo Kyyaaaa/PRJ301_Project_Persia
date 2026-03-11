@@ -12,6 +12,7 @@ import model.AssetRequest;
 import model.Classroom;
 import model.User;
 import model.View.AssetView;
+import model.dao.AssetAssignmentDAO;
 import model.dao.AssetDAO;
 import model.dao.AssetRequestDAO;
 import model.dao.ClassroomDAO;
@@ -129,6 +130,13 @@ public class assets_request_controller extends HttpServlet {
         if (username == null) {
             session.setAttribute("flash_error", "You must be logged in to submit a request");
             response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+        
+        // ===== Check if asset is already assigned =====
+        if (new AssetAssignmentDAO().isAssetCurrentlyAssigned(assetId)) {
+            session.setAttribute("flash_error", "Tài sản này đã có người mượn, không thể tạo request");
+            response.sendRedirect(request.getContextPath() + "/app/assets/request");
             return;
         }
 

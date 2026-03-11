@@ -90,4 +90,43 @@ public class AssetAssignmentDAO extends DBContext {
         }
         return false;
     }
+    
+    public boolean create(int assetId, int classroomId, java.util.Date assignedDate, java.util.Date returnDate, String assignedBy) {
+        String sql = """
+            INSERT INTO AssetAssignment (asset_id, classroom_id, assigned_date, return_date, assigned_by)
+            VALUES (?, ?, ?, ?, ?)
+        """;
+
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setInt(1, assetId);
+            ps.setInt(2, classroomId);
+            ps.setDate(3, assignedDate != null ? new java.sql.Date(assignedDate.getTime()) : null);
+            ps.setDate(4, returnDate != null ? new java.sql.Date(returnDate.getTime()) : null);
+            ps.setString(5, assignedBy);
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean isAssetCurrentlyAssigned(int assetId) {
+        String sql = "SELECT 1 FROM AssetAssignment WHERE asset_id = ?";
+        
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setInt(1, assetId);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

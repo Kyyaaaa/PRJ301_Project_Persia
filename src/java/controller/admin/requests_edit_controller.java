@@ -10,6 +10,7 @@ import model.AssetRequest;
 import model.Role;
 import model.dao.RoleDAO;
 import model.User;
+import model.dao.AssetAssignmentDAO;
 import model.dao.AssetRequestDAO;
 import model.dao.UserDAO;
 import model.dao.RoleDAO;
@@ -113,6 +114,17 @@ public class requests_edit_controller extends HttpServlet {
 //        out.println(reviewNote);
 
         AssetRequest tmp = new AssetRequestDAO().edit(Integer.parseInt(requestId), status, user.username, now, reviewNote);
+        
+        // Tạo AssetAssignment nếu approve
+        if ("APPROVE".equals(status) && tmp != null) {
+            new AssetAssignmentDAO().create(
+                tmp.getAssetId(),
+                tmp.getClassroomId(),
+                new java.sql.Date(System.currentTimeMillis()), // Assigned Date: Lấy ngày hiện tại
+                tmp.getExpectedReturnDate(), // Return Date: Lấy từ Request
+                tmp.getRequestedBy() // Assigned By: Lấy người tạo request
+            );
+        }
         
         // 4. Hiện thông báo và quay về
         session.setAttribute("flash_success", "Request updated successfully");

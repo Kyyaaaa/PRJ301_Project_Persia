@@ -14,9 +14,6 @@
         <a href="<%= request.getContextPath() %>/app/assets/request">
             <button>Request to borrow asset</button>
         </a>
-        <a href="<%= request.getContextPath() %>/app/assets/report">
-            <button>Report asset</button>
-        </a>
         
         <%
             String success = (String) request.getAttribute("success");

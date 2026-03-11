@@ -15,8 +15,22 @@ public class login_controller extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // Lấy flash error từ session (nếu có)
         HttpSession session = request.getSession(false);
+        
+        // Return if session has logged in user
+        if (session != null) {
+            User user = (User) session.getAttribute("user");
+            if (user != null) {
+                if (user.getRole_id() == 1) {
+                    response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/app/dashboard");
+                }
+                return;
+            }
+        }
+        
+        // Lấy flash error từ session (nếu có)
         if (session != null) {
             String error = (String) session.getAttribute("flash_error");
             if (error != null) {
@@ -64,6 +78,10 @@ public class login_controller extends HttpServlet {
         session.setAttribute("user", user);
 
         // 6. Điều hướng theo role
-        response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+        if (user.getRole_id() == 1) {
+            response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+        } else {
+            response.sendRedirect(request.getContextPath() + "/app/dashboard");
+        }
     }
 }
