@@ -16,8 +16,6 @@ public class admin_filter implements Filter {
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
         throws IOException, ServletException {
-        res.setContentType("text/html; charset = UTF-8");
-        PrintWriter out = res.getWriter();
         
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
@@ -34,13 +32,10 @@ public class admin_filter implements Filter {
             return;
         }
         
-        // Không phải admin
-        RoleDAO role_dao = new RoleDAO();
-        
-        // Nếu không phải admin thì không cho vào
-        Role role = role_dao.getRoleById(user.role_id);
-        if(!role.role_name.equals("admin")) {
-            out.println("Bạn không có quyền truy cập vào đây");
+        //Không phải admin (role_id = 1 là admin)
+        if (user.role_id != 1) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                    "Bạn không có quyền truy cập trang này");
             return;
         }
         

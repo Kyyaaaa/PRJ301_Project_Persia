@@ -1,23 +1,36 @@
 package controller.admin;
 
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
-import java.io.PrintWriter;
-import model.Role;
-import model.dao.RoleDAO;
-import model.User;
+import model.dao.AssetDAO;
+import model.dao.ClassroomDAO;
 
 public class dashboard_controller extends HttpServlet {
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html; charset = UTF-8");
-        PrintWriter out = response.getWriter();
-        
-        // Forward the request to the JSP view to render the dashboard page
+
+        response.setContentType("text/html; charset=UTF-8");
+
+        AssetDAO assetDAO = new AssetDAO();
+        ClassroomDAO classroomDAO = new ClassroomDAO();
+
+        // Thống kê tài sản
+        int totalAssets = assetDAO.countTotalAssets();
+        int borrowedAssets = assetDAO.countByStatusName("Mượn");
+        int brokenAssets = assetDAO.countBrokenAndMaintenance();
+
+        // Thống kê phòng học
+        int totalClassrooms = classroomDAO.getTotalClassrooms();
+
+        // Set attribute sang JSP
+        request.setAttribute("totalAssets", totalAssets);
+        request.setAttribute("borrowedAssets", borrowedAssets);
+        request.setAttribute("brokenAssets", brokenAssets);
+        request.setAttribute("totalClassrooms", totalClassrooms);
+
         request.getRequestDispatcher("/WEB-INF/admin/dashboard.jsp")
                .forward(request, response);
     }

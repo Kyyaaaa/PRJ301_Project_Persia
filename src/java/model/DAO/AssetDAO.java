@@ -169,4 +169,74 @@ public class AssetDAO extends DBContext {
         }
         return false;
     }
+    
+    public int countTotalAssets() {
+        String sql = "SELECT COUNT(*) FROM Assets";
+
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()
+        ) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+    
+    public int countByStatusName(String statusName) {
+        String sql = """
+            SELECT COUNT(*)
+            FROM Assets a
+            INNER JOIN AssetStatus s 
+                ON a.status_id = s.status_id
+            WHERE s.status_name = ?
+        """;
+
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setString(1, statusName);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+    
+    public int countBrokenAndMaintenance() {
+        String sql = """
+            SELECT COUNT(*)
+            FROM Assets a
+            INNER JOIN AssetStatus s 
+                ON a.status_id = s.status_id
+            WHERE s.status_name IN (N'Hỏng', N'Bảo trì')
+        """;
+
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()
+        ) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
 }

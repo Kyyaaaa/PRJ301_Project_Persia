@@ -6,21 +6,25 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import model.DBContext;
+import model.Role;
 import model.User;
 
 public class UserDAO extends DBContext {
 
     /**
      * Login: kiểm tra username & password
+     * @param username
+     * @param password
      * @return User nếu đúng, null nếu sai
      */
     public User login(String username, String password) {
 
         String sql = """
-            SELECT username, password, role_id
-            FROM Users
-            WHERE username = ? AND password = ?
-        """;
+            SELECT u.username, u.password, u.role_id, r.role_name
+                    FROM Users u
+                    INNER JOIN Roles r ON u.role_id = r.role_id
+                    WHERE u.username = ? AND u.password = ?
+            """;
 
         try (
             Connection con = getConnection();
@@ -35,7 +39,8 @@ public class UserDAO extends DBContext {
                 return new User(
                     rs.getString("username"),
                     rs.getString("password"),
-                    rs.getInt("role_id")
+                    rs.getInt("role_id"),
+                    rs.getString("role_name")    
                 );
             }
 
@@ -47,7 +52,11 @@ public class UserDAO extends DBContext {
     }
     
     public List<User> getAllUsers() {
-        String sql = "SELECT * FROM Users";
+        String sql = """
+            SELECT u.username, u.password, u.role_id, r.role_name
+            FROM Users u
+            INNER JOIN Roles r ON u.role_id = r.role_id
+        """;
         
         try (
             Connection con = getConnection();
@@ -60,7 +69,8 @@ public class UserDAO extends DBContext {
                 users.add(new User(
                     rs.getString("username"),
                     rs.getString("password"),
-                    rs.getInt("role_id")
+                    rs.getInt("role_id"),
+                    rs.getString("role_name") 
                 ));
             }
             return users;
@@ -75,7 +85,7 @@ public class UserDAO extends DBContext {
      * Register: Đăng ký user mới gồm (username, password, role_id)
      * @return User nếu đăng ký thành công, null nếu không đăng ký thành công
      */
-    public User register(String username, String password, int role_id) {
+        public User register(String username, String password, int role_id) {
         String sql = """
             INSERT INTO Users(username, password, role_id) 
             VALUES (?, ?, ?);
@@ -92,7 +102,10 @@ public class UserDAO extends DBContext {
             int rs = ps.executeUpdate();
 
             if (rs > 0) {
-                return new User(username, password, role_id);
+                RoleDAO roleDAO = new model.dao.RoleDAO();
+                Role role = roleDAO.getRoleById(role_id);
+                String role_name = (role != null) ? role.getRole_name() : "";
+                return new User(username, password, role_id, role_name);
             }
         } catch (Exception e) {
             e.printStackTrace();
