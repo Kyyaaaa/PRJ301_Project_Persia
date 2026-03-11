@@ -53,6 +53,11 @@
                     <td><%= i.assignedDate %></td>
                     <td><%= i.returnDate %></td>
                     <td><%= i.assignedBy %></td>
+                    <td>
+                        <a href="<%= request.getContextPath() %>/app/asset-assignments/delete?assignmentId=<%= i.assignmentId %>">
+                            <button>Delete</button>
+                        </a>
+                    </td>
                 </tr>
                 <%
                         }

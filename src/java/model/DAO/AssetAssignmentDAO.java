@@ -1,4 +1,4 @@
-package model.dao;
+    package model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -67,5 +67,27 @@ public class AssetAssignmentDAO extends DBContext {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public boolean delete(int assignment_id) {
+        String sql = "delete from AssetAssignment where assignment_id = 1";
+
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            // Gán giá trị cho dấu hỏi chấm (?)
+            ps.setInt(1, assignment_id);
+
+            // executeUpdate trả về số dòng bị ảnh hưởng
+            int rowsAffected = ps.executeUpdate();
+            
+            // Nếu số dòng > 0 nghĩa là đã có user bị xóa
+            return rowsAffected > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
