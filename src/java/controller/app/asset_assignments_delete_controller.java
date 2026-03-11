@@ -6,18 +6,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-import model.View.AssetView;
-import model.dao.AssetDAO;
+import model.dao.AssetAssignmentDAO;
 
 public class asset_assignments_delete_controller extends HttpServlet {
     
+    private AssetAssignmentDAO assetAssignmentDAO = new AssetAssignmentDAO();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html; charset = UTF-8");
-        PrintWriter out = response.getWriter();
         
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -28,36 +26,51 @@ public class asset_assignments_delete_controller extends HttpServlet {
             }
         }
         
-        String username = request.getParameter("username");
-//        if(utilities.Validate.validateUsername(username)) {
-//            try {
-//                if(userDAO.isExist(username)) {
-//                    request.setAttribute("userToEdit", username); // Đặt đối tượng user vào request
-//                    request.getRequestDispatcher("/WEB-INF/admin/users_delete.jsp").forward(request, response);
-//                } 
-//                else {
-//                     // Xử lý khi không tìm thấy user
-//                    response.sendRedirect(request.getContextPath() + "/admin/users");
-//                }
-//            }
-//            catch(Exception e) { // Bắt các lỗi khác có thể xảy ra trong DAO
-//               session.setAttribute("flash_error", "An error occurred while fetching user data: " + e.getMessage());
-//               response.sendRedirect(request.getContextPath() + "/admin/users");
-//            }
-//        }
+        String assignmentIdStr = request.getParameter("assignmentId");
+        if (assignmentIdStr != null && !assignmentIdStr.isEmpty()) {
+            try {
+                int assignmentId = Integer.parseInt(assignmentIdStr);
+                request.setAttribute("assetAssignmentToEdit", assignmentIdStr);
+                request.getRequestDispatcher("/WEB-INF/app/asset-assignments_delete.jsp").forward(request, response);
+                return;
+            } catch (NumberFormatException e) {
+                session = request.getSession();
+                session.setAttribute("flash_error", "Invalid assignment ID format.");
+            }
+        } else {
+            session = request.getSession();
+            session.setAttribute("flash_error", "Assignment ID is required.");
+        }
         
-//        request.getRequestDispatcher("/WEB-INF/app/asset-assignments_delete.jsp")
-//               .forward(request, response);
-        
-//        out.println("Get");
+        // Redirect back to the list if there's an error or missing ID
+        response.sendRedirect(request.getContextPath() + "/app/asset-assignments");
     }
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html; charset = UTF-8");
-        PrintWriter out = response.getWriter();
         
+        String assignmentIdStr = request.getParameter("assetAssignmentToEdit");
+        HttpSession session = request.getSession();
         
+        if (assignmentIdStr != null && !assignmentIdStr.isEmpty()) {
+            try {
+                int assignmentId = Integer.parseInt(assignmentIdStr);
+                if (assetAssignmentDAO.delete(assignmentId)) {
+                    session.setAttribute("flash_success", "Asset assignment deleted successfully.");
+                } else {
+                    session.setAttribute("flash_error", "Failed to delete the asset assignment.");
+                }
+            } catch (NumberFormatException e) {
+                session.setAttribute("flash_error", "Invalid assignment ID format.");
+            } catch (Exception e) {
+                session.setAttribute("flash_error", "An error occurred: " + e.getMessage());
+            }
+        } else {
+            session.setAttribute("flash_error", "Assignment ID is missing.");
+        }
+        
+        response.sendRedirect(request.getContextPath() + "/app/asset-assignments");
     }
 }

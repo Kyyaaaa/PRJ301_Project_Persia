@@ -70,7 +70,7 @@ public class AssetAssignmentDAO extends DBContext {
     }
     
     public boolean delete(int assignment_id) {
-        String sql = "delete from AssetAssignment where assignment_id = 1";
+        String sql = "delete from AssetAssignment where assignment_id = ?";
 
         try (
             Connection con = getConnection();
