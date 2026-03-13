@@ -40,7 +40,15 @@ public class assets_request_controller extends HttpServlet {
             }
         }
         
-        List<AssetView> listAssetView = new AssetDAO().getAllAssetViews();
+        List<AssetView> allAssets = new AssetDAO().getAllAssetViews();
+        List<AssetView> listAssetView = new java.util.ArrayList<>();
+        if (allAssets != null) {
+            for (AssetView av : allAssets) {
+                if ("OK".equalsIgnoreCase(av.getStatusName())) {
+                    listAssetView.add(av);
+                }
+            }
+        }
         request.setAttribute("listAssetView", listAssetView);
         
         List<Classroom> listClassroom = new ClassroomDAO().getAllClassrooms();

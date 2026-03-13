@@ -160,9 +160,6 @@ public class UserDAO extends DBContext {
         return false;
     }
     
-    /**
-     * Kiểm tra user có tồn tại hay không
-     */
     public boolean isExist(String username) {
         String sql = "SELECT 1 FROM Users WHERE username = ?";
 
@@ -178,6 +175,30 @@ public class UserDAO extends DBContext {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public User findByUsername(String username) {
+        String sql = "SELECT * FROM Users WHERE username = ?";
+
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new User(
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getInt("role_id")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
     
     

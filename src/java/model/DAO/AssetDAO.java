@@ -147,6 +147,28 @@ public class AssetDAO extends DBContext {
         }
         return false;
     }
+
+    public Asset findById(String assetId) {
+        String sql = "SELECT * FROM Assets WHERE asset_id = ?";
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setString(1, assetId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Asset(
+                    rs.getInt("asset_id"),
+                    rs.getString("asset_name"),
+                    rs.getInt("type_id"),
+                    rs.getInt("status_id")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     
     public boolean delete(String assetId) {
         String sql = "DELETE FROM Assets WHERE asset_id = ?";

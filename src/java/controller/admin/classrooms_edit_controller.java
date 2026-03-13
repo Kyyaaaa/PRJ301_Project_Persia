@@ -41,6 +41,8 @@ public class classrooms_edit_controller extends HttpServlet {
         
         try {
             if(new ClassroomDAO().isExist(classroomId)) {
+                Classroom currentClassroom = new ClassroomDAO().findById(classroomId);
+                request.setAttribute("currentClassroom", currentClassroom);
                 request.setAttribute("classroomToEdit", classroomId); // Đặt đối tượng user vào request
                 request.getRequestDispatcher("/WEB-INF/admin/classrooms_edit.jsp").forward(request, response);
             } 

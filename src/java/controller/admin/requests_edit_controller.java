@@ -102,6 +102,32 @@ public class requests_edit_controller extends HttpServlet {
             return;
         }
         
+        if ("APPROVE".equals(status)) {
+            boolean isAssigned = new AssetAssignmentDAO().isAssetCurrentlyAssigned(cur.getAssetId());
+            if (isAssigned) {
+                session.setAttribute("flash_error", "Approval is not possible because this property is already borrowed");
+                response.sendRedirect(request.getContextPath() + "/admin/requests/edit?requestId=" + requestId);
+                return;
+            }
+            
+            model.Asset asset = new model.dao.AssetDAO().findById(String.valueOf(cur.getAssetId()));
+            if (asset != null) {
+                java.util.List<model.AssetStatus> statuses = new model.dao.AssetStatusDAO().getAllAssetStatuses();
+                boolean isOk = false;
+                for (model.AssetStatus s : statuses) {
+                    if (s.getStatusId() == asset.getStatusId() && "OK".equalsIgnoreCase(s.getStatusName())) {
+                        isOk = true;
+                        break;
+                    }
+                }
+                if (!isOk) {
+                    session.setAttribute("flash_error", "Approval is not possible because the asset status is not OK");
+                    response.sendRedirect(request.getContextPath() + "/admin/requests/edit?requestId=" + requestId);
+                    return;
+                }
+            }
+        }
+        
         // 3. Cập nhật
 //        out.println(Integer.parseInt(requestId));
 //        out.println("<br>");

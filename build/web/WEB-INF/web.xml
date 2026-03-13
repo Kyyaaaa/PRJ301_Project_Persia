@@ -215,6 +215,26 @@
         <servlet-name>requests_edit</servlet-name>
         <url-pattern>/admin/requests/edit</url-pattern>
     </servlet-mapping>
+
+    <!-- Admin asset-assignments servlet -->
+    <servlet>
+        <servlet-name>admin_asset-assignments</servlet-name>
+        <servlet-class>controller.admin.asset_assignments_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>admin_asset-assignments</servlet-name>
+        <url-pattern>/admin/asset-assignments</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Admin asset-assignments_delete servlet -->
+    <servlet>
+        <servlet-name>admin_asset-assignments_delete</servlet-name>
+        <servlet-class>controller.admin.asset_assignments_delete_controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>admin_asset-assignments_delete</servlet-name>
+        <url-pattern>/admin/asset-assignments/delete</url-pattern>
+    </servlet-mapping>
     
     <!-- App asset-assignments servlet -->
     <servlet>

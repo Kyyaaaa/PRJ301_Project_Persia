@@ -6,64 +6,92 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Asset Assignments</title>
     </head>
     <body>
         <jsp:include page="/WEB-INF/layout/app_navbar.jsp" />
         
-        <%
-            String success = (String) request.getAttribute("success");
-            if (success != null) {
-        %>
-            <p style="color:green;"><%= success %></p>
-        <%
-            }
-        %>
-        
-        <%
-            String error = (String) request.getAttribute("error");
-            if (error != null) {
-        %>
-            <p style="color:red;"><%= error %></p>
-        <%
-            }
-        %>
+        <div class="container container-fluid mt-4 mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2><i class="bi bi-link-45deg me-2 text-primary"></i>My Asset Assignments</h2>
+            </div>
             
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Assignment ID</th>
-                    <th>Asset ID</th>
-                    <th>Classroom ID</th>
-                    <th>Assigned Date</th>
-                    <th>Return Date</th>
-                    <th>Assigned By</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%
-                    List<AssetAssignment> list = (ArrayList<AssetAssignment>)request.getAttribute("list");
-                    if(list != null) {
-                        for(AssetAssignment i : list) {
-                %>
-                <tr>
-                    <td><%= i.assignmentId %></td>
-                    <td><%= i.assetId %></td>
-                    <td><%= i.classroomId %></td>
-                    <td><%= i.assignedDate %></td>
-                    <td><%= i.returnDate %></td>
-                    <td><%= i.assignedBy %></td>
-                    <td>
-                        <a href="<%= request.getContextPath() %>/app/asset-assignments/delete?assignmentId=<%= i.assignmentId %>">
-                            <button>Delete</button>
-                        </a>
-                    </td>
-                </tr>
-                <%
-                        }
-                    }
-                %>
-            </tbody>
-        </table>
+            <%
+                String success = (String) request.getAttribute("success");
+                if (success != null) {
+            %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-1"></i> <%= success %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <%
+                }
+
+                String error = (String) request.getAttribute("error");
+                if (error != null) {
+            %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle me-1"></i> <%= error %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <%
+                }
+            %>
+                
+            <div class="table-wrapper table-responsive shadow-sm">
+                <table class="table table-bordered table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Asset ID</th>
+                            <th>Classroom ID</th>
+                            <th>Assigned Date</th>
+                            <th>Return Date</th>
+                            <th>Assigned By</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                            List<AssetAssignment> list = (ArrayList<AssetAssignment>)request.getAttribute("list");
+                            if(list != null && !list.isEmpty()) {
+                                for(AssetAssignment i : list) {
+                        %>
+                        <tr>
+                            <td class="fw-bold text-muted">#<%= i.assignmentId %></td>
+                            <td><span class="badge bg-primary rounded-pill"><i class="bi bi-box-seam me-1"></i><%= i.assetId %></span></td>
+                            <td><i class="bi bi-door-open text-secondary me-1"></i><%= i.classroomId %></td>
+                            <td><span class="badge bg-secondary"><i class="bi bi-calendar-check me-1"></i><%= i.assignedDate %></span></td>
+                            <td>
+                                <% if(i.returnDate != null) { %>
+                                    <span class="badge bg-info text-dark"><i class="bi bi-calendar-event me-1"></i><%= i.returnDate %></span>
+                                <% } else { %>
+                                    <span class="text-muted fst-italic">Not specified</span>
+                                <% } %>
+                            </td>
+                            <td><i class="bi bi-person text-secondary me-1"></i><%= i.assignedBy %></td>
+                            <td class="text-center action-buttons">
+                                <a href="<%= request.getContextPath() %>/app/asset-assignments/delete?assignmentId=<%= i.assignmentId %>" class="btn btn-outline-danger btn-sm" title="Delete Assignment">
+                                    <i class="bi bi-trash"></i> Remove
+                                </a>
+                            </td>
+                        </tr>
+                        <%
+                                }
+                            } else {
+                        %>
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-5">
+                                <i class="bi bi-inbox fs-1 d-block mb-3 text-secondary"></i>
+                                <h5 class="fw-light">No asset assignments found</h5>
+                            </td>
+                        </tr>
+                        <%
+                            }
+                        %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </body>
 </html>

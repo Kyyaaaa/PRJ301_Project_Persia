@@ -111,6 +111,27 @@ public class ClassroomDAO extends DBContext {
         }
         return false;
     }
+
+    public Classroom findById(String classroomId) {
+        String sql = "SELECT * FROM Classroom WHERE classroom_id = ?";
+        try (
+            Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setString(1, classroomId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Classroom(
+                    rs.getInt("classroom_id"),
+                    rs.getString("classroom_name"),
+                    rs.getString("location")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     
     public boolean delete(String classroomId) {
         String sql = "DELETE FROM Classroom WHERE classroom_id = ?";

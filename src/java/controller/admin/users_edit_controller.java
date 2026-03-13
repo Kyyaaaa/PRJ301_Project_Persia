@@ -36,6 +36,8 @@ public class users_edit_controller extends HttpServlet {
         if(utilities.Validate.validateUsername(username)) {
             try {
                 if(userDAO.isExist(username)) {
+                    User oldUser = userDAO.findByUsername(username);
+                    request.setAttribute("oldUser", oldUser);
                     request.setAttribute("userToEdit", username); // Đặt đối tượng user vào request
                     request.getRequestDispatcher("/WEB-INF/admin/users_edit.jsp").forward(request, response);
                 } 

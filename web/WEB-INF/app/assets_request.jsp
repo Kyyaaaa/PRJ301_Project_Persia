@@ -13,110 +13,123 @@
 
         <jsp:include page="/WEB-INF/layout/app_navbar.jsp" />
 
-        <h1>Request an asset</h1>
+        <div class="container container-fluid mt-4 mb-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-primary text-white py-3">
+                            <h3 class="card-title mb-0"><i class="bi bi-cart-plus me-2"></i>Request an Asset</h3>
+                        </div>
+                        <div class="card-body p-4">
 
-        <%
-            List<AssetView> listAssetView =
-                (ArrayList<AssetView>) request.getAttribute("listAssetView");
-            List<Classroom> listClassroom =
-                (ArrayList<Classroom>) request.getAttribute("listClassroom");
-        %>
-
-        <form action="<%= request.getContextPath() %>/app/assets/request" method="post">
-            <table>
-
-                <!-- Asset -->
-                <tr>
-                    <td>Asset:</td>
-                    <td>
-                        <select name="assetId" required>
-                            <option value="">-- Select asset --</option>
+                            <!-- Success message -->
                             <%
-                                for (AssetView a : listAssetView) {
+                                String success = (String) request.getAttribute("success");
+                                if (success != null) {
                             %>
-                                <option value="<%= a.getAssetId() %>">
-                                    <%= a.getAssetName() %>
-                                    ( <%= a.getTypeName() %> - <%= a.getStatusName() %> )
-                                </option>
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <i class="bi bi-check-circle me-1"></i> <%= success %>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
                             <%
                                 }
                             %>
-                        </select>
-                    </td>
-                </tr>
 
-                <!-- Classroom -->
-                <tr>
-                    <td>Classroom:</td>
-                    <td>
-                        <select name="classroomId" required>
-                            <option value="">-- Select classroom --</option>
+                            <!-- Error message -->
                             <%
-                                for (Classroom c : listClassroom) {
+                                String error = (String) request.getAttribute("error");
+                                if (error != null) {
                             %>
-                                <option value="<%= c.getClassroomId() %>">
-                                    <%= c.getClassroomName() %>
-                                    <%
-                                        if (c.getLocation() != null) {
-                                    %>
-                                        - <%= c.getLocation() %>
-                                    <%
-                                        }
-                                    %>
-                                </option>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <i class="bi bi-exclamation-triangle me-1"></i> <%= error %>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
                             <%
                                 }
                             %>
-                        </select>
-                    </td>
-                </tr>
 
-                <!-- Purpose -->
-                <tr>
-                    <td>Purpose:</td>
-                    <td>
-                        <textarea name="purpose" rows="4" cols="40"
-                                  placeholder="Enter purpose of using asset"></textarea>
-                    </td>
-                </tr>
+                            <%
+                                List<AssetView> listAssetView =
+                                    (ArrayList<AssetView>) request.getAttribute("listAssetView");
+                                List<Classroom> listClassroom =
+                                    (ArrayList<Classroom>) request.getAttribute("listClassroom");
+                            %>
 
-                <!-- Expected return date -->
-                <tr>
-                    <td>Expected return date:</td>
-                    <td>
-                        <input type="date" name="expectedReturnDate">
-                    </td>
-                </tr>
+                            <form action="<%= request.getContextPath() %>/app/assets/request" method="post" class="needs-validation">
+                                
+                                <!-- Asset -->
+                                <div class="mb-4">
+                                    <label for="assetId" class="form-label fw-bold">Select Asset <span class="text-danger">*</span></label>
+                                    <select class="form-select border-primary" id="assetId" name="assetId" required>
+                                        <option value="" selected disabled>-- Choose an asset to request --</option>
+                                        <%
+                                            if (listAssetView != null) {
+                                                for (AssetView a : listAssetView) {
+                                        %>
+                                            <option value="<%= a.getAssetId() %>">
+                                                <%= a.getAssetName() %>
+                                                ( <%= a.getTypeName() %> - <%= a.getStatusName() %> )
+                                            </option>
+                                        <%
+                                                }
+                                            }
+                                        %>
+                                    </select>
+                                    <div class="form-text text-muted">Select the asset you want to assign to a classroom.</div>
+                                </div>
 
-                <!-- Submit -->
-                <tr>
-                    <td colspan="2">
-                        <button type="submit">Send request</button>
-                    </td>
-                </tr>
+                                <!-- Classroom -->
+                                <div class="mb-4">
+                                    <label for="classroomId" class="form-label fw-bold">Assign to Classroom <span class="text-danger">*</span></label>
+                                    <select class="form-select border-primary" id="classroomId" name="classroomId" required>
+                                        <option value="" selected disabled>-- Choose a classroom --</option>
+                                        <%
+                                            if (listClassroom != null) {
+                                                for (Classroom c : listClassroom) {
+                                        %>
+                                            <option value="<%= c.getClassroomId() %>">
+                                                <%= c.getClassroomName() %> 
+                                                <%= c.getLocation() != null ? "- " + c.getLocation() : "" %>
+                                            </option>
+                                        <%
+                                                }
+                                            }
+                                        %>
+                                    </select>
+                                </div>
 
-            </table>
-        </form>
+                                <!-- Purpose -->
+                                <div class="mb-4">
+                                    <label for="purpose" class="form-label fw-bold">Purpose of Request</label>
+                                    <textarea class="form-control focus-ring focus-ring-primary" id="purpose" name="purpose" rows="4" 
+                                              placeholder="Briefly explain why you need this asset..."></textarea>
+                                </div>
 
-        <!-- Success message -->
-        <%
-            String success = (String) request.getAttribute("success");
-            if (success != null) {
-        %>
-            <p style="color:green;"><%= success %></p>
-        <%
-            }
-        %>
+                                <!-- Expected return date -->
+                                <div class="mb-4">
+                                    <label for="expectedReturnDate" class="form-label fw-bold">Expected Return Date</label>
+                                    <input type="date" class="form-control" id="expectedReturnDate" name="expectedReturnDate">
+                                </div>
 
-        <!-- Error message -->
-        <%
-            String error = (String) request.getAttribute("error");
-            if (error != null) {
-        %>
-            <p style="color:red;"><%= error %></p>
-        <%
-            }
-        %>
+                                <!-- Submit -->
+                                <div class="d-grid mt-5">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="bi bi-send me-2"></i> Submit Request
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <a href="<%= request.getContextPath() %>/app/assets" class="text-decoration-none text-muted">
+                            <i class="bi bi-arrow-left"></i> Back to Assets List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </body>
 </html>

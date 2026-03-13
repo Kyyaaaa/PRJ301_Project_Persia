@@ -48,6 +48,15 @@ public class assets_edit_controller extends HttpServlet {
         
         try {
             if(new AssetDAO().isExist(assetId)) {
+                if (new model.dao.AssetAssignmentDAO().isAssetCurrentlyAssigned(Integer.parseInt(assetId))) {
+                    session = request.getSession();
+                    session.setAttribute("flash_error", "This asset is currently assigned and cannot be edited.");
+                    response.sendRedirect(request.getContextPath() + "/admin/assets/read");
+                    return;
+                }
+
+                Asset currentAsset = new AssetDAO().findById(assetId);
+                request.setAttribute("currentAsset", currentAsset);
                 request.setAttribute("assetToEdit", assetId); // Đặt đối tượng user vào request
                 request.getRequestDispatcher("/WEB-INF/admin/assets_edit.jsp").forward(request, response);
             } 
@@ -97,6 +106,13 @@ public class assets_edit_controller extends HttpServlet {
         if(!new AssetDAO().isExist(assetId)) {
             session.setAttribute("flash_error", "Asset does not exist");
             response.sendRedirect(request.getContextPath() + "/admin/assets/edit?assetId=" + assetId);
+            return;
+        }
+        
+        if (new model.dao.AssetAssignmentDAO().isAssetCurrentlyAssigned(Integer.parseInt(assetId))) {
+            session.setAttribute("flash_error", "This asset is currently assigned and cannot be edited.");
+            response.sendRedirect(request.getContextPath() + "/admin/assets/read");
+            return;
         }
         
         // 3. Cập nhật tài sản
